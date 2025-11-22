@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Code2, Heart } from 'lucide-react';
+import { Sparkles, Code2, Heart, Eraser } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
@@ -112,6 +112,24 @@ function App() {
     }
   };
 
+  const handlePracticeMode = () => {
+    if (!currentProblem) return;
+
+    const solution = currentProblem.solution;
+    const mainMethodRegex = /public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}/;
+    const match = solution.match(mainMethodRegex);
+
+    if (match) {
+      const clearedCode = solution.replace(
+        mainMethodRegex,
+        'public static void main(String[] args) {\n        \n    }'
+      );
+      setCode(clearedCode);
+      setOutput('');
+      setHasError(false);
+    }
+  };
+
   return (
     <div
       className="h-screen flex flex-col bg-[#1e1e1e] overflow-hidden"
@@ -137,25 +155,35 @@ function App() {
         >
           {currentProblem && (
             <div className="bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] border-b border-gray-800 px-3 sm:px-4 py-2 sm:py-3">
-              <div className="flex items-start gap-2">
-                <div className="flex-shrink-0">
-                  <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-semibold rounded ${
-                    currentProblem.difficulty === 'basic' ? 'bg-green-500/20 text-green-400' :
-                    currentProblem.difficulty === 'intermediate' ? 'bg-blue-500/20 text-blue-400' :
-                    currentProblem.difficulty === 'advanced' ? 'bg-orange-500/20 text-orange-400' :
-                    'bg-red-500/20 text-red-400'
-                  }`}>
-                    {currentProblem.difficulty.toUpperCase()}
-                  </span>
+              <div className="flex items-start justify-between gap-2">
+                <div className="flex items-start gap-2 flex-1 min-w-0">
+                  <div className="flex-shrink-0">
+                    <span className={`inline-block px-2 py-0.5 text-[10px] sm:text-xs font-semibold rounded ${
+                      currentProblem.difficulty === 'basic' ? 'bg-green-500/20 text-green-400' :
+                      currentProblem.difficulty === 'intermediate' ? 'bg-blue-500/20 text-blue-400' :
+                      currentProblem.difficulty === 'advanced' ? 'bg-orange-500/20 text-orange-400' :
+                      'bg-red-500/20 text-red-400'
+                    }`}>
+                      {currentProblem.difficulty.toUpperCase()}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h2 className="text-xs sm:text-sm font-semibold text-white truncate">
+                      #{currentProblem.number}: {currentProblem.title}
+                    </h2>
+                    {currentProblem.input && (
+                      <pre className="text-[10px] sm:text-xs text-gray-400 mt-1 whitespace-pre-wrap">{currentProblem.input}</pre>
+                    )}
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h2 className="text-xs sm:text-sm font-semibold text-white truncate">
-                    #{currentProblem.number}: {currentProblem.title}
-                  </h2>
-                  {currentProblem.input && (
-                    <pre className="text-[10px] sm:text-xs text-gray-400 mt-1 whitespace-pre-wrap">{currentProblem.input}</pre>
-                  )}
-                </div>
+                <button
+                  onClick={handlePracticeMode}
+                  className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-xs font-medium rounded-md transition-all duration-200 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+                  title="Clear main method to practice"
+                >
+                  <Eraser className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Practice</span>
+                </button>
               </div>
             </div>
           )}

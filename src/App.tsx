@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Code2, Heart, Eraser } from 'lucide-react';
+import { Sparkles, Code2, Heart, Eraser, Eye } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
@@ -20,6 +20,7 @@ function App() {
   const [isResizing, setIsResizing] = useState(false);
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
+  const [showFullSolution, setShowFullSolution] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -97,7 +98,15 @@ function App() {
       const problem = await getRandomProblem();
       if (problem) {
         setCurrentProblem(problem);
-        setCode(problem.solution);
+
+        const mainMethodRegex = /public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}/;
+        const practiceCode = problem.solution.replace(
+          mainMethodRegex,
+          'public static void main(String[] args) {\n        \n    }'
+        );
+
+        setCode(practiceCode);
+        setShowFullSolution(false);
         setOutput('');
         setHasError(false);
       } else {
@@ -125,9 +134,18 @@ function App() {
         'public static void main(String[] args) {\n        \n    }'
       );
       setCode(clearedCode);
+      setShowFullSolution(false);
       setOutput('');
       setHasError(false);
     }
+  };
+
+  const handleShowSolution = () => {
+    if (!currentProblem) return;
+    setCode(currentProblem.solution);
+    setShowFullSolution(true);
+    setOutput('');
+    setHasError(false);
   };
 
   return (
@@ -176,14 +194,29 @@ function App() {
                     )}
                   </div>
                 </div>
-                <button
-                  onClick={handlePracticeMode}
-                  className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-xs font-medium rounded-md transition-all duration-200 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
-                  title="Clear main method to practice"
-                >
-                  <Eraser className="w-3.5 h-3.5" />
-                  <span className="hidden sm:inline">Practice</span>
-                </button>
+                <div className="flex-shrink-0 flex flex-col gap-1.5">
+                  <button
+                    onClick={handlePracticeMode}
+                    className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white text-xs font-medium rounded-md transition-all duration-200 shadow-lg hover:shadow-purple-500/50 hover:scale-105"
+                    title="Clear main method to practice"
+                  >
+                    <Eraser className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Practice</span>
+                  </button>
+                  <button
+                    onClick={handleShowSolution}
+                    disabled={showFullSolution}
+                    className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md transition-all duration-200 shadow-lg ${
+                      showFullSolution
+                        ? 'bg-gray-700 text-gray-400 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-800 text-white hover:shadow-cyan-500/50 hover:scale-105'
+                    }`}
+                    title="Show complete solution"
+                  >
+                    <Eye className="w-3.5 h-3.5" />
+                    <span className="hidden sm:inline">Solution</span>
+                  </button>
+                </div>
               </div>
             </div>
           )}

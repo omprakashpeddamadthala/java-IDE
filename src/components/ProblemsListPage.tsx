@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Code2, ArrowLeft, Zap, Target, Flame, Crown, ChevronLeft, ChevronRight } from 'lucide-react';
 import { type JavaProblem } from '../services/problemService';
+import { Footer } from './Footer';
 
 interface ProblemsListPageProps {
   onNavigateHome: () => void;
@@ -188,22 +189,22 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
             </div>
 
             {totalPages > 1 && (
-              <div className="flex items-center justify-center gap-2 mt-8">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-8 pb-4">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
                   disabled={currentPage === 1}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-900 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-900 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200 text-sm"
                 >
                   <ChevronLeft className="w-4 h-4" />
-                  Previous
+                  <span>Previous</span>
                 </button>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center">
                   {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
                     <button
                       key={page}
                       onClick={() => setCurrentPage(page)}
-                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-200 ${
+                      className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg font-semibold transition-all duration-200 text-sm ${
                         currentPage === page
                           ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/50'
                           : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -217,9 +218,9 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
                   disabled={currentPage === totalPages}
-                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-900 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-900 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200 text-sm"
                 >
-                  Next
+                  <span>Next</span>
                   <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -227,6 +228,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
           </>
         )}
       </div>
+      <Footer />
     </div>
   );
 }

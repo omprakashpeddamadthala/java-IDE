@@ -40,6 +40,14 @@ function App() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  useEffect(() => {
+    const loadProblems = async () => {
+      const problems = await getAllProblems();
+      setCachedProblems(problems);
+    };
+    loadProblems();
+  }, []);
+
   const handleRunCode = async () => {
     setIsRunning(true);
     setOutput('');
@@ -147,11 +155,7 @@ function App() {
     setHasError(false);
   };
 
-  const handleNavigateToProblems = async () => {
-    if (!cachedProblems) {
-      const problems = await getAllProblems();
-      setCachedProblems(problems);
-    }
+  const handleNavigateToProblems = () => {
     setCurrentPage('problems');
   };
 

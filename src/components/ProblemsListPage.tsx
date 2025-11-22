@@ -1,27 +1,27 @@
 import { useState, useEffect } from 'react';
-import { Code2, ArrowLeft, Zap, Target, Flame, Crown } from 'lucide-react';
-import { getAllProblems, type JavaProblem } from '../services/problemService';
+import { Code2, ArrowLeft, Zap, Target, Flame, Crown, ChevronLeft, ChevronRight } from 'lucide-react';
+import { type JavaProblem } from '../services/problemService';
 
 interface ProblemsListPageProps {
   onNavigateHome: () => void;
   onSelectProblem: (problem: JavaProblem) => void;
+  cachedProblems: JavaProblem[] | null;
 }
 
-export function ProblemsListPage({ onNavigateHome, onSelectProblem }: ProblemsListPageProps) {
+const PROBLEMS_PER_PAGE = 9;
+
+export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProblems }: ProblemsListPageProps) {
   const [problems, setProblems] = useState<JavaProblem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [filterDifficulty, setFilterDifficulty] = useState<string>('all');
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    loadProblems();
-  }, []);
-
-  const loadProblems = async () => {
-    setIsLoading(true);
-    const allProblems = await getAllProblems();
-    setProblems(allProblems);
-    setIsLoading(false);
-  };
+    if (cachedProblems) {
+      setProblems(cachedProblems);
+      setIsLoading(false);
+    }
+  }, [cachedProblems]);
 
   const getDifficultyIcon = (difficulty: string) => {
     switch (difficulty) {
@@ -56,6 +56,15 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem }: ProblemsLi
   const filteredProblems = filterDifficulty === 'all'
     ? problems
     : problems.filter(p => p.difficulty === filterDifficulty);
+
+  const totalPages = Math.ceil(filteredProblems.length / PROBLEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PROBLEMS_PER_PAGE;
+  const endIndex = startIndex + PROBLEMS_PER_PAGE;
+  const currentProblems = filteredProblems.slice(startIndex, endIndex);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filterDifficulty]);
 
   const handlePractice = (problem: JavaProblem) => {
     onSelectProblem(problem);
@@ -147,8 +156,9 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem }: ProblemsLi
             <p className="text-gray-500 text-sm mt-2">Try seeding the database first</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredProblems.map((problem) => (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {currentProblems.map((problem) => (
               <div
                 key={problem.id}
                 className="bg-gray-800 rounded-lg p-6 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20"
@@ -174,8 +184,47 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem }: ProblemsLi
                   Practice
                 </button>
               </div>
-            ))}
-          </div>
+              ))}
+            </div>
+
+            {totalPages > 1 && (
+              <div className="flex items-center justify-center gap-2 mt-8">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                  disabled={currentPage === 1}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-900 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                  Previous
+                </button>
+
+                <div className="flex items-center gap-2">
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`w-10 h-10 rounded-lg font-semibold transition-all duration-200 ${
+                        currentPage === page
+                          ? 'bg-cyan-600 text-white shadow-lg shadow-cyan-500/50'
+                          : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
+                      }`}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                  disabled={currentPage === totalPages}
+                  className="flex items-center gap-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 disabled:bg-gray-900 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-200"
+                >
+                  Next
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

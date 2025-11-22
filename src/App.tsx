@@ -5,7 +5,7 @@ import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemsListPage } from './components/ProblemsListPage';
 import { runJavaCode } from './services/compilerService';
-import { getRandomProblem, type JavaProblem } from './services/problemService';
+import { getRandomProblem, getAllProblems, type JavaProblem } from './services/problemService';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
 
 type LayoutMode = 'bottom' | 'side';
@@ -23,6 +23,7 @@ function App() {
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
   const [currentPage, setCurrentPage] = useState<'home' | 'problems'>('home');
+  const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -146,7 +147,11 @@ function App() {
     setHasError(false);
   };
 
-  const handleNavigateToProblems = () => {
+  const handleNavigateToProblems = async () => {
+    if (!cachedProblems) {
+      const problems = await getAllProblems();
+      setCachedProblems(problems);
+    }
     setCurrentPage('problems');
   };
 
@@ -159,6 +164,7 @@ function App() {
       <ProblemsListPage
         onNavigateHome={handleNavigateHome}
         onSelectProblem={handleSelectProblem}
+        cachedProblems={cachedProblems}
       />
     );
   }

@@ -98,7 +98,14 @@ function App() {
       const problem = await getRandomProblem();
       if (problem) {
         setCurrentProblem(problem);
-        setCode(problem.input || problem.solution);
+
+        const mainMethodRegex = /public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}/;
+        const practiceCode = problem.solution.replace(
+          mainMethodRegex,
+          'public static void main(String[] args) {\n        \n    }'
+        );
+
+        setCode(practiceCode);
         setShowFullSolution(false);
         setOutput('');
         setHasError(false);

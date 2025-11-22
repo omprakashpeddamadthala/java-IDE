@@ -78,17 +78,6 @@ export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleL
         )}
       </div>
 
-      <div className="border-t border-gray-800 bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] px-4 py-2.5">
-        <div className="flex items-center justify-center gap-2 text-xs">
-          <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-          <span className="text-gray-400">Developed By</span>
-          <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#00D4AA] to-[#00A8E8]">
-            Om Prakash Peddamadthala
-          </span>
-          <Code2 className="w-3.5 h-3.5 text-[#00D4AA]" />
-          <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
-        </div>
-      </div>
     </div>
   );
 }

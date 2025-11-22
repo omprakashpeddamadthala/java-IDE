@@ -73,8 +73,9 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col">
-      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8 flex-1">
+    <div className="h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
         <div className="mb-4 sm:mb-8">
           <button
             onClick={onNavigateHome}
@@ -227,6 +228,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
             )}
           </>
         )}
+        </div>
       </div>
       <Footer />
     </div>

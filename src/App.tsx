@@ -83,7 +83,7 @@ function App() {
         className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' ? 'flex-col' : 'flex-row'}`}
       >
         <div
-          className="relative"
+          className="relative overflow-hidden"
           style={{
             [layoutMode === 'bottom' ? 'height' : 'width']: `${100 - outputSize}%`
           }}

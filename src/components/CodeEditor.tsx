@@ -21,9 +21,10 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
   };
 
   return (
-    <div className="flex-1 relative">
+    <div className="h-full w-full overflow-hidden">
       <Editor
         height="100%"
+        width="100%"
         defaultLanguage="java"
         value={value}
         onChange={handleEditorChange}

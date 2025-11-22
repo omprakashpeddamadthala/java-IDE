@@ -1,0 +1,14 @@
+{
+  "basic": [
+    {
+      "number": 1,
+      "title": "Find unique/distinct numbers from an array",
+      "input": "List<Integer> numbers = List.of(1,2,3,2,4,5,4);\n// Output: [1, 2, 3, 4, 5]",
+      "solution": "import java.util.*;\nimport java.util.stream.*;\npublic class UniqueNumbers {\n    public static void main(String[] args) {\n        List<Integer> numbers = List.of(1, 2, 3, 2, 4, 5, 4);\n       \n        List<Integer> unique = numbers.stream()\n            .distinct()\n            .collect(Collectors.toList());\n       \n        System.out.println(\"Original: \" + numbers);\n        System.out.println(\"Unique: \" + unique);\n    }\n}",
+      "output": "Original: [1, 2, 3, 2, 4, 5, 4]\nUnique: [1, 2, 3, 4, 5]"
+    }
+  ],
+  "intermediate": [],
+  "advanced": [],
+  "expert": []
+}

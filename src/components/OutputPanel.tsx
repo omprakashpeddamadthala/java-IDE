@@ -1,0 +1,66 @@
+import { Terminal, Loader2, CheckCircle2, XCircle } from 'lucide-react';
+
+interface OutputPanelProps {
+  output: string;
+  isRunning: boolean;
+  hasError: boolean;
+}
+
+export function OutputPanel({ output, isRunning, hasError }: OutputPanelProps) {
+  return (
+    <div className="bg-[#0d1117] border-t border-gray-800 flex flex-col max-h-[40vh] min-h-[200px]">
+      <div className="flex items-center justify-between px-4 py-2 border-b border-gray-800">
+        <div className="flex items-center gap-2">
+          <Terminal className="w-4 h-4 text-[#00D4AA]" />
+          <span className="text-sm font-semibold text-gray-300">Output</span>
+        </div>
+
+        {isRunning && (
+          <div className="flex items-center gap-2 text-xs text-gray-400">
+            <Loader2 className="w-3 h-3 animate-spin" />
+            <span>Executing...</span>
+          </div>
+        )}
+
+        {!isRunning && output && !hasError && (
+          <div className="flex items-center gap-1 text-xs text-green-400">
+            <CheckCircle2 className="w-3 h-3" />
+            <span>Success</span>
+          </div>
+        )}
+
+        {!isRunning && hasError && (
+          <div className="flex items-center gap-1 text-xs text-red-400">
+            <XCircle className="w-3 h-3" />
+            <span>Error</span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex-1 overflow-auto p-4">
+        {isRunning ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="w-8 h-8 text-[#00D4AA] animate-spin" />
+              <p className="text-gray-400 text-sm">Compiling and running your code...</p>
+            </div>
+          </div>
+        ) : output ? (
+          <pre
+            className={`font-mono text-sm whitespace-pre-wrap ${
+              hasError ? 'text-red-400 bg-red-950/20 p-3 rounded' : 'text-gray-100'
+            }`}
+          >
+            {output}
+          </pre>
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-gray-500 text-sm">
+              Click "Run" or press Ctrl+Enter to execute your code
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

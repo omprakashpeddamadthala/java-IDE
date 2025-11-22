@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Sparkles, Code2, Heart } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
@@ -13,10 +13,25 @@ function App() {
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [layoutMode, setLayoutMode] = useState<LayoutMode>('side');
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('bottom');
+  const [isMobile, setIsMobile] = useState(false);
   const [outputSize, setOutputSize] = useState(40);
   const [isResizing, setIsResizing] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      if (mobile) {
+        setLayoutMode('bottom');
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const handleRunCode = async () => {
     setIsRunning(true);
@@ -68,7 +83,9 @@ function App() {
   };
 
   const toggleLayout = () => {
-    setLayoutMode(prev => prev === 'bottom' ? 'side' : 'bottom');
+    if (!isMobile) {
+      setLayoutMode(prev => prev === 'bottom' ? 'side' : 'bottom');
+    }
   };
 
   return (
@@ -81,12 +98,12 @@ function App() {
 
       <div
         ref={containerRef}
-        className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' ? 'flex-col' : 'flex-row'}`}
+        className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
       >
         <div
           className="relative overflow-hidden"
           style={{
-            [layoutMode === 'bottom' ? 'height' : 'width']: `${100 - outputSize}%`
+            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
           }}
         >
           <CodeEditor
@@ -96,28 +113,31 @@ function App() {
           />
         </div>
 
-        <div
-          className={`relative ${
-            layoutMode === 'bottom'
-              ? 'w-full cursor-ns-resize hover:bg-[#00D4AA]/20'
-              : 'h-full cursor-ew-resize hover:bg-[#00D4AA]/20'
-          } ${isResizing ? 'bg-[#00D4AA]/30' : ''}`}
-          style={{
-            [layoutMode === 'bottom' ? 'height' : 'width']: '4px',
-            backgroundColor: isResizing ? undefined : '#374151'
-          }}
-          onMouseDown={handleMouseDown}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`bg-[#00D4AA] rounded-full ${
-              layoutMode === 'bottom' ? 'w-8 h-1' : 'w-1 h-8'
-            }`} />
+        {!isMobile && (
+          <div
+            className={`relative ${
+              layoutMode === 'bottom'
+                ? 'w-full cursor-ns-resize hover:bg-[#00D4AA]/20'
+                : 'h-full cursor-ew-resize hover:bg-[#00D4AA]/20'
+            } ${isResizing ? 'bg-[#00D4AA]/30' : ''}`}
+            style={{
+              [layoutMode === 'bottom' ? 'height' : 'width']: '4px',
+              backgroundColor: isResizing ? undefined : '#374151'
+            }}
+            onMouseDown={handleMouseDown}
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className={`bg-[#00D4AA] rounded-full ${
+                layoutMode === 'bottom' ? 'w-8 h-1' : 'w-1 h-8'
+              }`} />
+            </div>
           </div>
-        </div>
+        )}
 
         <div
+          className={isMobile ? 'border-t border-gray-800' : ''}
           style={{
-            [layoutMode === 'bottom' ? 'height' : 'width']: `${outputSize}%`
+            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
           }}
         >
           <OutputPanel
@@ -126,21 +146,26 @@ function App() {
             hasError={hasError}
             layoutMode={layoutMode}
             onToggleLayout={toggleLayout}
+            isMobile={isMobile}
           />
         </div>
       </div>
 
-      <footer className="border-t border-gray-800 bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] px-4 py-3">
-        <div className="flex items-center justify-center gap-2 text-xs">
-          <Sparkles className="w-3.5 h-3.5 text-yellow-400" />
-          <span className="text-gray-400">Developed By</span>
-          <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#00D4AA] to-[#00A8E8]">
-            Om Prakash Peddamadthala
-          </span>
-          <Code2 className="w-3.5 h-3.5 text-[#00D4AA]" />
-          <Heart className="w-3 h-3 text-red-500 fill-red-500 animate-pulse" />
-          <span className="text-gray-500 mx-2">|</span>
-          <span className="text-gray-500">© 2024 All Rights Reserved</span>
+      <footer className="border-t border-gray-800 bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] px-2 sm:px-4 py-2 sm:py-3">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs">
+          <div className="flex items-center gap-1 sm:gap-2">
+            <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-yellow-400" />
+            <span className="text-gray-400 text-[10px] sm:text-xs">Developed By</span>
+            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#00D4AA] to-[#00A8E8] text-[10px] sm:text-xs">
+              Om Prakash Peddamadthala
+            </span>
+            <Code2 className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#00D4AA]" />
+            <Heart className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-red-500 fill-red-500 animate-pulse" />
+          </div>
+          <div className="flex items-center gap-1 sm:gap-2">
+            <span className="text-gray-500 hidden sm:inline">|</span>
+            <span className="text-gray-500 text-[10px] sm:text-xs">© 2024 All Rights Reserved</span>
+          </div>
         </div>
       </footer>
     </div>

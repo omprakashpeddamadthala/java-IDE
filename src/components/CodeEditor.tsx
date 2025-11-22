@@ -31,10 +31,10 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
         onMount={handleEditorMount}
         theme="vs-dark"
         options={{
-          fontSize: 14,
+          fontSize: window.innerWidth < 768 ? 12 : 14,
           fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
           fontLigatures: true,
-          minimap: { enabled: false },
+          minimap: { enabled: window.innerWidth >= 768 },
           scrollBeyondLastLine: false,
           automaticLayout: true,
           tabSize: 4,
@@ -44,7 +44,7 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
           smoothScrolling: true,
           cursorBlinking: 'smooth',
           cursorSmoothCaretAnimation: 'on',
-          padding: { top: 16, bottom: 16 },
+          padding: { top: window.innerWidth < 768 ? 8 : 16, bottom: window.innerWidth < 768 ? 8 : 16 },
         }}
         loading={
           <div className="h-full flex items-center justify-center bg-[#1e1e1e]">

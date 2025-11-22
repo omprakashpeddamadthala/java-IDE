@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Code2, Heart, Eye } from 'lucide-react';
+import { Sparkles, Code2, Heart, Eye, BookOpen } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
+import { ProblemsListPage } from './components/ProblemsListPage';
 import { runJavaCode } from './services/compilerService';
 import { getRandomProblem, type JavaProblem } from './services/problemService';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
@@ -21,6 +22,7 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
+  const [currentPage, setCurrentPage] = useState<'home' | 'problems'>('home');
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -129,6 +131,38 @@ function App() {
     setHasError(false);
   };
 
+  const handleSelectProblem = (problem: JavaProblem) => {
+    setCurrentProblem(problem);
+
+    const mainMethodRegex = /public\s+static\s+void\s+main\s*\([^)]*\)\s*\{([\s\S]*?)\n\s*\}/;
+    const practiceCode = problem.solution.replace(
+      mainMethodRegex,
+      'public static void main(String[] args) {\n        \n    }'
+    );
+
+    setCode(practiceCode);
+    setShowFullSolution(false);
+    setOutput('');
+    setHasError(false);
+  };
+
+  const handleNavigateToProblems = () => {
+    setCurrentPage('problems');
+  };
+
+  const handleNavigateHome = () => {
+    setCurrentPage('home');
+  };
+
+  if (currentPage === 'problems') {
+    return (
+      <ProblemsListPage
+        onNavigateHome={handleNavigateHome}
+        onSelectProblem={handleSelectProblem}
+      />
+    );
+  }
+
   return (
     <div
       className="h-screen flex flex-col bg-[#1e1e1e] overflow-hidden"
@@ -140,6 +174,7 @@ function App() {
         isRunning={isRunning}
         onRandomProblem={handleRandomProblem}
         isLoadingProblem={isLoadingProblem}
+        onNavigateToProblems={handleNavigateToProblems}
       />
 
       <div

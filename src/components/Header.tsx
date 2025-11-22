@@ -1,13 +1,14 @@
-import { Play, Code2, Shuffle } from 'lucide-react';
+import { Play, Code2, Shuffle, BookOpen } from 'lucide-react';
 
 interface HeaderProps {
   onRun: () => void;
   isRunning: boolean;
   onRandomProblem: () => void;
   isLoadingProblem: boolean;
+  onNavigateToProblems: () => void;
 }
 
-export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem }: HeaderProps) {
+export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
   return (
     <header className="bg-[#0d1117] border-b border-gray-800 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
       <div className="flex items-center gap-2 sm:gap-3">
@@ -39,6 +40,15 @@ export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem }: 
           <span className="hidden md:inline text-xs opacity-75 ml-1">
             (Ctrl+Enter)
           </span>
+        </button>
+
+        <button
+          onClick={onNavigateToProblems}
+          className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"
+          title="View all problems"
+        >
+          <BookOpen className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
+          <span className="hidden sm:inline">Problems</span>
         </button>
       </div>
     </header>

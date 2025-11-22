@@ -13,7 +13,7 @@ function App() {
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [layoutMode, setLayoutMode] = useState<LayoutMode>('bottom');
+  const [layoutMode, setLayoutMode] = useState<LayoutMode>('side');
   const [isMobile, setIsMobile] = useState(false);
   const [outputSize, setOutputSize] = useState(40);
   const [isResizing, setIsResizing] = useState(false);

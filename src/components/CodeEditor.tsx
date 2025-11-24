@@ -1,5 +1,6 @@
 import Editor from '@monaco-editor/react';
 import { Loader2 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 interface CodeEditorProps {
   value: string;
@@ -8,6 +9,7 @@ interface CodeEditorProps {
 }
 
 export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
+  const { theme } = useTheme();
   const handleEditorChange = (value: string | undefined) => {
     onChange(value || '');
   };
@@ -29,7 +31,7 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
         value={value}
         onChange={handleEditorChange}
         onMount={handleEditorMount}
-        theme="vs-dark"
+        theme={theme === 'dark' ? 'vs-dark' : 'light'}
         options={{
           fontSize: window.innerWidth < 768 ? 12 : 14,
           fontFamily: "'JetBrains Mono', 'Fira Code', 'Consolas', monospace",
@@ -47,10 +49,10 @@ export function CodeEditor({ value, onChange, onRun }: CodeEditorProps) {
           padding: { top: window.innerWidth < 768 ? 8 : 16, bottom: window.innerWidth < 768 ? 8 : 16 },
         }}
         loading={
-          <div className="h-full flex items-center justify-center bg-[#1e1e1e]">
+          <div className="h-full flex items-center justify-center" style={{ backgroundColor: 'var(--bg-primary)' }}>
             <div className="flex flex-col items-center gap-3">
-              <Loader2 className="w-8 h-8 text-[#00D4AA] animate-spin" />
-              <p className="text-gray-400 text-sm">Loading Editor...</p>
+              <Loader2 className="w-8 h-8 animate-spin" style={{ color: 'var(--accent-primary)' }} />
+              <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>Loading Editor...</p>
             </div>
           </div>
         }

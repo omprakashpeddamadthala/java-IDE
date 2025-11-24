@@ -205,11 +205,11 @@ function App() {
                     </span>
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h2 className="text-xs sm:text-sm font-semibold text-white truncate">
+                    <h2 className="text-xs sm:text-sm font-semibold truncate" style={{ color: 'var(--text-primary)' }}>
                       #{currentProblem.number}: {currentProblem.title}
                     </h2>
                     {currentProblem.input && (
-                      <pre className="text-[10px] sm:text-xs text-gray-400 mt-1 whitespace-pre-wrap">{currentProblem.input}</pre>
+                      <pre className="text-[10px] sm:text-xs mt-1 whitespace-pre-wrap" style={{ color: 'var(--text-secondary)' }}>{currentProblem.input}</pre>
                     )}
                   </div>
                 </div>
@@ -283,16 +283,16 @@ function App() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs">
           <div className="flex items-center gap-1 sm:gap-2">
             <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-yellow-400" />
-            <span className="text-gray-400 text-[10px] sm:text-xs">Developed By</span>
-            <span className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-[#00D4AA] to-[#00A8E8] text-[10px] sm:text-xs">
+            <span className="text-[10px] sm:text-xs" style={{ color: 'var(--text-secondary)' }}>Developed By</span>
+            <span className="font-semibold text-transparent bg-clip-text text-[10px] sm:text-xs" style={{ backgroundImage: 'linear-gradient(to right, var(--accent-primary), var(--accent-secondary))' }}>
               Om Prakash Peddamadthala
             </span>
-            <Code2 className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#00D4AA]" />
+            <Code2 className="w-3 sm:w-3.5 h-3 sm:h-3.5" style={{ color: 'var(--accent-primary)' }} />
             <Heart className="w-2.5 sm:w-3 h-2.5 sm:h-3 text-red-500 fill-red-500 animate-pulse" />
           </div>
           <div className="flex items-center gap-1 sm:gap-2">
-            <span className="text-gray-500 hidden sm:inline">|</span>
-            <span className="text-gray-500 text-[10px] sm:text-xs">© 2024 All Rights Reserved</span>
+            <span className="hidden sm:inline" style={{ color: 'var(--text-tertiary)' }}>|</span>
+            <span className="text-[10px] sm:text-xs" style={{ color: 'var(--text-tertiary)' }}>© 2024 All Rights Reserved</span>
           </div>
         </div>
       </footer>

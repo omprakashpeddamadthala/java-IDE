@@ -11,6 +11,13 @@ export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
 
   if (!isOpen) return null;
 
+  const userName = user?.user_metadata?.full_name ||
+                   (profile?.first_name && profile?.last_name
+                     ? `${profile.first_name} ${profile.last_name}`
+                     : profile?.first_name || profile?.last_name || 'User');
+
+  const userAvatar = user?.user_metadata?.avatar_url || profile?.avatar_url;
+
   const handleSignOut = async () => {
     await signOut();
     onClose();
@@ -39,10 +46,10 @@ export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
         <div className="p-8">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 mb-4 overflow-hidden">
-              {profile?.avatar_url ? (
+              {userAvatar ? (
                 <img
-                  src={profile.avatar_url}
-                  alt={profile.first_name || 'User'}
+                  src={userAvatar}
+                  alt={userName}
                   className="w-full h-full object-cover"
                 />
               ) : (
@@ -64,9 +71,7 @@ export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
                 <div className="flex-1 min-w-0">
                   <p className="text-xs text-gray-400 mb-1">Full Name</p>
                   <p className="text-sm font-medium text-white truncate">
-                    {profile?.first_name && profile?.last_name
-                      ? `${profile.first_name} ${profile.last_name}`
-                      : profile?.first_name || profile?.last_name || 'Not provided'}
+                    {userName}
                   </p>
                 </div>
               </div>

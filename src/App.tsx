@@ -67,6 +67,13 @@ function App() {
     }
   }, [user]);
 
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (hash && hash.includes('access_token')) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
   const handleRunCode = async () => {
     if (!user && executionCount >= EXECUTION_LIMIT) {
       setShowAuthModal(true);

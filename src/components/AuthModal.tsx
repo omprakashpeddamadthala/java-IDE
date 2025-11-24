@@ -12,10 +12,12 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
 
   const handleGoogleSignIn = async () => {
     try {
+      const redirectUrl = `${window.location.origin}${window.location.pathname}`;
+
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: window.location.origin,
+          redirectTo: redirectUrl,
         },
       });
 

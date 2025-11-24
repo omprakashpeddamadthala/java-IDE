@@ -73,7 +73,7 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex flex-col overflow-hidden">
+    <div className="h-screen flex flex-col overflow-hidden" style={{ backgroundColor: 'var(--bg-primary)' }}>
       <div className="flex-1 overflow-y-auto">
         <div className="max-w-7xl mx-auto px-3 sm:px-4 py-4 sm:py-8">
         <div className="mb-4 sm:mb-8">
@@ -85,11 +85,11 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
             <span>Back to Editor</span>
           </button>
 
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 flex items-center gap-2 sm:gap-3">
-            <Code2 className="w-6 sm:w-8 h-6 sm:h-8 text-cyan-400" />
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 flex items-center gap-2 sm:gap-3" style={{ color: 'var(--text-primary)' }}>
+            <Code2 className="w-6 sm:w-8 h-6 sm:h-8" style={{ color: 'var(--accent-primary)' }} />
             <span className="break-words">Java Practice Problems</span>
           </h1>
-          <p className="text-gray-400 text-sm sm:text-base">
+          <p className="text-sm sm:text-base" style={{ color: 'var(--text-secondary)' }}>
             Choose a problem to practice. Total: {problems.length} problems
           </p>
         </div>

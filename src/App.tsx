@@ -164,7 +164,8 @@ function App() {
 
   return (
     <div
-      className="h-screen flex flex-col bg-[#1e1e1e] overflow-hidden"
+      className="h-screen flex flex-col overflow-hidden"
+      style={{ backgroundColor: 'var(--bg-primary)' }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
@@ -187,7 +188,10 @@ function App() {
           }}
         >
           {currentProblem && (
-            <div className="bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] border-b border-gray-800 px-3 sm:px-4 py-2 sm:py-3">
+            <div className="border-b px-3 sm:px-4 py-2 sm:py-3" style={{
+              background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
+              borderColor: 'var(--border-color)'
+            }}>
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2 flex-1 min-w-0">
                   <div className="flex-shrink-0">
@@ -272,7 +276,10 @@ function App() {
         </div>
       </div>
 
-      <footer className="border-t border-gray-800 bg-gradient-to-r from-[#161b22] via-[#0d1117] to-[#161b22] px-2 sm:px-4 py-2 sm:py-3">
+      <footer className="border-t px-2 sm:px-4 py-2 sm:py-3" style={{
+        background: 'linear-gradient(to right, var(--bg-gradient-start), var(--bg-gradient-mid), var(--bg-gradient-end))',
+        borderColor: 'var(--border-color)'
+      }}>
         <div className="flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-xs">
           <div className="flex items-center gap-1 sm:gap-2">
             <Sparkles className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-yellow-400" />

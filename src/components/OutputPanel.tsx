@@ -11,11 +11,14 @@ interface OutputPanelProps {
 
 export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleLayout, isMobile = false }: OutputPanelProps) {
   return (
-    <div className={`bg-[#0d1117] flex flex-col h-full ${layoutMode === 'side' ? 'border-l' : 'border-t'} border-gray-800`}>
-      <div className="flex items-center justify-between px-2 sm:px-4 py-2 border-b border-gray-800 bg-gradient-to-r from-[#0d1117] to-[#161b22]">
+    <div className={`flex flex-col h-full ${layoutMode === 'side' ? 'border-l' : 'border-t'}`} style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}>
+      <div className="flex items-center justify-between px-2 sm:px-4 py-2 border-b" style={{
+        borderColor: 'var(--border-color)',
+        background: 'linear-gradient(to right, var(--bg-tertiary), var(--bg-secondary))'
+      }}>
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <Terminal className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[#00D4AA]" />
-          <span className="text-xs sm:text-sm font-semibold text-gray-300">Output</span>
+          <Terminal className="w-3.5 sm:w-4 h-3.5 sm:h-4" style={{ color: 'var(--accent-primary)' }} />
+          <span className="text-xs sm:text-sm font-semibold" style={{ color: 'var(--text-secondary)' }}>Output</span>
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">

@@ -11,11 +11,14 @@ interface HeaderProps {
 
 export function Header({ onRun, isRunning, onRandomProblem, isLoadingProblem, onNavigateToProblems }: HeaderProps) {
   return (
-    <header className="bg-[#0d1117] border-b border-gray-800 px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between">
+    <header
+      className="border-b px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-between"
+      style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}
+    >
       <div className="flex items-center gap-2 sm:gap-3">
-        <Code2 className="w-5 sm:w-6 h-5 sm:h-6 text-[#00D4AA]" />
-        <h1 className="text-base sm:text-xl font-bold text-white">Java-IDE</h1>
-        <span className="text-xs text-gray-500 hidden md:inline">
+        <Code2 className="w-5 sm:w-6 h-5 sm:h-6" style={{ color: 'var(--accent-primary)' }} />
+        <h1 className="text-base sm:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Java-IDE</h1>
+        <span className="text-xs hidden md:inline" style={{ color: 'var(--text-tertiary)' }}>
           Online Java Compiler & Runner
         </span>
       </div>

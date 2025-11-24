@@ -7,9 +7,11 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggleTheme}
-      className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700
-                 text-gray-300 hover:text-white transition-all duration-200
-                 light:bg-gray-200 light:hover:bg-gray-300 light:text-gray-700"
+      className={`p-2 rounded-lg transition-all duration-200 ${
+        theme === 'dark'
+          ? 'bg-gray-800 hover:bg-gray-700 text-gray-300 hover:text-white'
+          : 'bg-gray-200 hover:bg-gray-300 text-gray-700 hover:text-gray-900'
+      }`}
       title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
       aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
     >

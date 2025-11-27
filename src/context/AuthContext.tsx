@@ -78,7 +78,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (error) {
         console.error('Error loading user profile:', error);
       } else {
-        console.log('User profile loaded:', data);
         setProfile(data);
       }
     } catch (error) {
@@ -102,13 +101,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   const isAdmin = profile?.is_admin ?? false;
-
-  console.log('AuthContext state:', {
-    userEmail: user?.email,
-    profileEmail: profile?.email,
-    isAdmin: profile?.is_admin,
-    hasProfile: !!profile
-  });
 
   return (
     <AuthContext.Provider value={{ user, profile, session, loading, isAdmin, signOut, refreshProfile }}>

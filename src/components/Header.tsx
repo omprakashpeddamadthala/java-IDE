@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Code2, Shuffle, BookOpen, LogIn, UserCircle2, BarChart3 } from 'lucide-react';
+import { Code2, Shuffle, BookOpen, LogIn, UserCircle2, BarChart3, Coffee } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
@@ -22,13 +22,16 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
       style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}
     >
       <div className="flex items-center gap-2 sm:gap-3">
-        <Code2 className="w-6 sm:w-7 h-6 sm:h-7" style={{ color: 'var(--accent-primary)' }} />
+        <div className="relative">
+          <Coffee className="w-6 sm:w-7 h-6 sm:h-7" style={{ color: 'var(--accent-primary)' }} />
+          <Code2 className="w-3 sm:w-3.5 h-3 sm:h-3.5 absolute -bottom-0.5 -right-0.5" style={{ color: 'var(--accent-primary)' }} />
+        </div>
         <div className="flex flex-col">
-          <h1 className="text-sm sm:text-lg font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>
+          <h1 className="text-sm sm:text-lg font-bold leading-tight bg-gradient-to-r from-orange-500 via-red-500 to-orange-600 bg-clip-text text-transparent">
             JavaCodingPractice.com
           </h1>
-          <span className="text-[10px] sm:text-xs leading-tight hidden sm:block" style={{ color: 'var(--text-tertiary)' }}>
-            Master Java Through Practice
+          <span className="text-[10px] sm:text-xs leading-tight hidden sm:block font-medium" style={{ color: 'var(--text-secondary)' }}>
+            Code. Compile. Conquer.
           </span>
         </div>
       </div>

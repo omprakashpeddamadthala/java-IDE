@@ -22,11 +22,15 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
       style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}
     >
       <div className="flex items-center gap-2 sm:gap-3">
-        <Code2 className="w-5 sm:w-6 h-5 sm:h-6" style={{ color: 'var(--accent-primary)' }} />
-        <h1 className="text-base sm:text-xl font-bold" style={{ color: 'var(--text-primary)' }}>Java-IDE</h1>
-        <span className="text-xs hidden md:inline" style={{ color: 'var(--text-tertiary)' }}>
-          Online Java Compiler & Runner
-        </span>
+        <Code2 className="w-6 sm:w-7 h-6 sm:h-7" style={{ color: 'var(--accent-primary)' }} />
+        <div className="flex flex-col">
+          <h1 className="text-sm sm:text-lg font-bold leading-tight" style={{ color: 'var(--text-primary)' }}>
+            JavaCodingPractice.com
+          </h1>
+          <span className="text-[10px] sm:text-xs leading-tight hidden sm:block" style={{ color: 'var(--text-tertiary)' }}>
+            Master Java Through Practice
+          </span>
+        </div>
       </div>
 
       <div className="flex items-center gap-2 sm:gap-3">

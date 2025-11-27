@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Shuffle, BookOpen, LogIn, UserCircle2, BarChart3, Zap } from 'lucide-react';
+import { Shuffle, BookOpen, LogIn, UserCircle2, BarChart3, Terminal } from 'lucide-react';
 import { ThemeToggle } from './ThemeToggle';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
@@ -22,15 +22,15 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
       style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}
     >
       <div className="flex items-center gap-2 sm:gap-3">
-        <div className="relative flex items-center justify-center w-8 sm:w-9 h-8 sm:h-9 rounded-lg bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 shadow-lg">
-          <Zap className="w-4 sm:w-5 h-4 sm:h-5 text-white" fill="white" />
+        <div className="relative flex items-center justify-center w-9 sm:w-10 h-9 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 shadow-xl shadow-cyan-500/20 animate-pulse-slow">
+          <Terminal className="w-5 sm:w-6 h-5 sm:h-6 text-slate-900" strokeWidth={2.5} />
         </div>
         <div className="flex flex-col">
-          <h1 className="text-sm sm:text-lg font-bold leading-tight bg-gradient-to-r from-blue-600 via-cyan-600 to-teal-600 bg-clip-text text-transparent">
+          <h1 className="text-sm sm:text-lg font-extrabold leading-tight bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent tracking-tight">
             JavaCodingPractice.com
           </h1>
-          <span className="text-[10px] sm:text-xs leading-tight hidden sm:block font-semibold bg-gradient-to-r from-blue-500 to-cyan-500 bg-clip-text text-transparent">
-            Practice Smart. Code Fast. Excel Always.
+          <span className="text-[10px] sm:text-xs leading-tight hidden sm:block font-bold tracking-wide" style={{ color: 'var(--text-secondary)' }}>
+            Where Developers Level Up
           </span>
         </div>
       </div>

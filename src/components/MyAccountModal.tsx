@@ -1,4 +1,5 @@
-import { X, User, Mail, Calendar, LogOut } from 'lucide-react';
+import { useState } from 'react';
+import { X, User, Mail, Calendar, LogOut, RefreshCw, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 interface MyAccountModalProps {
@@ -7,7 +8,8 @@ interface MyAccountModalProps {
 }
 
 export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
-  const { user, profile, signOut } = useAuth();
+  const { user, profile, signOut, refreshProfile, isAdmin } = useAuth();
+  const [refreshing, setRefreshing] = useState(false);
 
   if (!isOpen) return null;
 
@@ -21,6 +23,12 @@ export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
   const handleSignOut = async () => {
     await signOut();
     onClose();
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await refreshProfile();
+    setTimeout(() => setRefreshing(false), 500);
   };
 
   const formatDate = (dateString: string | undefined) => {
@@ -56,8 +64,13 @@ export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
                 <User className="w-10 h-10 text-white" />
               )}
             </div>
-            <h2 className="text-2xl font-bold text-white mb-1">
+            <h2 className="text-2xl font-bold text-white mb-1 flex items-center justify-center gap-2">
               My Account
+              {isAdmin && (
+                <span className="px-2 py-1 text-xs rounded bg-gradient-to-r from-yellow-500 to-orange-500 text-white font-bold">
+                  ADMIN
+                </span>
+              )}
             </h2>
             <p className="text-gray-400 text-sm">
               Your profile information
@@ -102,13 +115,23 @@ export function MyAccountModal({ isOpen, onClose }: MyAccountModalProps) {
             </div>
           </div>
 
-          <button
-            onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
-          >
-            <LogOut className="w-5 h-5" />
-            Sign Out
-          </button>
+          <div className="space-y-3">
+            <button
+              onClick={handleRefresh}
+              disabled={refreshing}
+              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <RefreshCw className={`w-5 h-5 ${refreshing ? 'animate-spin' : ''}`} />
+              {refreshing ? 'Refreshing...' : 'Refresh Profile'}
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <LogOut className="w-5 h-5" />
+              Sign Out
+            </button>
+          </div>
         </div>
       </div>
     </div>

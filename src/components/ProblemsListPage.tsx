@@ -9,7 +9,7 @@ interface ProblemsListPageProps {
   cachedProblems: JavaProblem[] | null;
 }
 
-const PROBLEMS_PER_PAGE = 20;
+const PROBLEMS_PER_PAGE = 10;
 
 export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProblems }: ProblemsListPageProps) {
   const [problems, setProblems] = useState<JavaProblem[]>([]);

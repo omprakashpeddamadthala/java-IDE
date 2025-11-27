@@ -228,19 +228,18 @@ export function ProblemsListPage({ onNavigateHome, onSelectProblem, cachedProble
                 className="bg-gray-800 rounded-lg p-3 sm:p-4 hover:bg-gray-750 transition-all duration-200 border border-gray-700 hover:border-cyan-500/50 hover:shadow-lg hover:shadow-cyan-500/20 flex items-center justify-between gap-3 sm:gap-4"
               >
                 <div className="flex items-center gap-2 sm:gap-4 flex-1 min-w-0">
-                  {user && (
-                    <button
-                      onClick={() => toggleCompletion(problem.id, progress.get(problem.id) || false)}
-                      className="flex-shrink-0 transition-all duration-200 hover:scale-110"
-                      title={progress.get(problem.id) ? 'Mark as incomplete' : 'Mark as complete'}
-                    >
-                      {progress.get(problem.id) ? (
-                        <CheckCircle2 className="w-5 h-5 text-green-500" />
-                      ) : (
-                        <Circle className="w-5 h-5 text-gray-600 hover:text-gray-400" />
-                      )}
-                    </button>
-                  )}
+                  <button
+                    onClick={() => user ? toggleCompletion(problem.id, progress.get(problem.id) || false) : null}
+                    className={`flex-shrink-0 transition-all duration-200 ${user ? 'hover:scale-110 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+                    title={user ? (progress.get(problem.id) ? 'Mark as incomplete' : 'Mark as complete') : 'Login to track progress'}
+                    disabled={!user}
+                  >
+                    {progress.get(problem.id) ? (
+                      <CheckCircle2 className="w-5 h-5 text-green-500" />
+                    ) : (
+                      <Circle className="w-5 h-5 text-gray-600 hover:text-gray-400" />
+                    )}
+                  </button>
 
                   <span className="text-gray-500 font-mono text-xs sm:text-sm font-semibold flex-shrink-0">#{problem.number}</span>
 

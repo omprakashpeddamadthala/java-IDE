@@ -3,6 +3,7 @@ import { BarChart3, Zap, Target, Flame, Crown, ArrowLeft, TrendingUp } from 'luc
 import { supabase } from '../config/supabase';
 import { useAuth } from '../context/AuthContext';
 import { Footer } from './Footer';
+import { JavaProblem } from '../types/problem.types';
 
 interface DifficultyStats {
   difficulty: string;
@@ -12,9 +13,10 @@ interface DifficultyStats {
 
 interface DashboardProps {
   onNavigateHome: () => void;
+  cachedProblems?: JavaProblem[] | null;
 }
 
-export function Dashboard({ onNavigateHome }: DashboardProps) {
+export function Dashboard({ onNavigateHome, cachedProblems }: DashboardProps) {
   const { user } = useAuth();
   const [stats, setStats] = useState<DifficultyStats[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,20 +24,18 @@ export function Dashboard({ onNavigateHome }: DashboardProps) {
   const [totalCompleted, setTotalCompleted] = useState(0);
 
   useEffect(() => {
-    if (user) {
+    if (user && cachedProblems) {
       loadStats();
+    } else if (!user) {
+      setIsLoading(false);
     }
-  }, [user]);
+  }, [user, cachedProblems]);
 
   const loadStats = async () => {
-    if (!user) return;
+    if (!user || !cachedProblems) return;
 
     try {
-      const { data: problems, error: problemsError } = await supabase
-        .from('java_problems')
-        .select('id, difficulty');
-
-      if (problemsError) throw problemsError;
+      const problems = cachedProblems;
 
       const { data: progress, error: progressError } = await supabase
         .from('user_problem_progress')

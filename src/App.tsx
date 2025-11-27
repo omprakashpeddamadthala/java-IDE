@@ -213,6 +213,7 @@ function App() {
     return (
       <Dashboard
         onNavigateHome={handleNavigateHome}
+        cachedProblems={cachedProblems}
       />
     );
   }

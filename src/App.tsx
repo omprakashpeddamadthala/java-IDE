@@ -205,7 +205,7 @@ function App() {
   };
 
   if (currentPage === 'admin') {
-    return <AdminPanel />;
+    return <AdminPanel onNavigateHome={handleNavigateHome} />;
   }
 
   if (currentPage === 'problems') {

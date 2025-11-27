@@ -50,7 +50,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           <span className="hidden sm:inline">Problems</span>
         </button>
 
-        {onNavigateToDashboard && (
+        {onNavigateToDashboard && user && (
           <button
             onClick={onNavigateToDashboard}
             className="flex items-center gap-1.5 sm:gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-3 sm:px-5 py-1.5 sm:py-2 rounded-lg text-sm sm:text-base font-semibold transition-all duration-200 transform hover:scale-105 active:scale-95"

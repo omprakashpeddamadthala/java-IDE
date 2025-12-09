@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { Shuffle, BookOpen, LogIn, CircleUser as UserCircle2, BarChart3, Terminal, Shield } from 'lucide-react';
-import { ThemeToggle } from './ThemeToggle';
 import { AuthModal } from './AuthModal';
 import { MyAccountModal } from './MyAccountModal';
 import { useAuth } from '../context/AuthContext';
@@ -79,8 +78,6 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
             <span className="text-xs sm:text-base">Admin</span>
           </button>
         )}
-
-        <ThemeToggle />
 
         {user ? (
           <button

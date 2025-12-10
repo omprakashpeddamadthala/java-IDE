@@ -18,86 +18,83 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
   const [showAccountModal, setShowAccountModal] = useState(false);
   return (
     <header
-      className="border-b"
+      className="border-b backdrop-blur-sm"
       style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}
     >
-      <div className="px-2 sm:px-4 py-2 sm:py-3 flex items-center justify-center">
-        <div className="flex items-center gap-2 sm:gap-3">
-          <div className="relative flex items-center justify-center w-8 sm:w-10 h-8 sm:h-10 rounded-xl bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500 shadow-xl shadow-cyan-500/20 animate-pulse-slow">
-            <Terminal className="w-4 sm:w-6 h-4 sm:h-6 text-slate-900" strokeWidth={2.5} />
+      <div className="px-4 sm:px-6 py-4 flex items-center justify-between max-w-7xl mx-auto">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500">
+            <Terminal className="w-4 h-4 text-slate-900" strokeWidth={2.5} />
           </div>
-          <div className="flex flex-col">
-            <h1 className="text-xs sm:text-lg font-extrabold leading-tight bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent tracking-tight">
-              JavaCodingPractice.com
-            </h1>
-            <span className="text-[9px] sm:text-xs leading-tight hidden sm:block font-bold tracking-wide" style={{ color: 'var(--text-secondary)' }}>
-              5 Minutes Daily. Code Smarter. Faster.
-            </span>
-          </div>
+          <h1 className="text-base sm:text-lg font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+            JavaCodingPractice
+          </h1>
         </div>
-      </div>
 
-      <div className="border-t px-1 sm:px-4 py-2 flex flex-wrap items-center justify-center gap-1.5 sm:gap-3" style={{ borderColor: 'var(--border-color)' }}>
-        <button
-          onClick={onRandomProblem}
-          disabled={isLoadingProblem}
-          className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 disabled:from-gray-600 disabled:to-gray-600 disabled:cursor-not-allowed text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-base font-semibold transition-all duration-200"
-          title="Load a random Java Stream API problem"
-        >
-          <Shuffle className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-          <span className="text-xs sm:text-base">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
-        </button>
-
-        <button
-          onClick={onNavigateToProblems}
-          className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-base font-semibold transition-all duration-200"
-          title="View all problems"
-        >
-          <BookOpen className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-          <span className="text-xs sm:text-base">Problems</span>
-        </button>
-
-        {onNavigateToDashboard && user && (
+        <nav className="flex items-center gap-6 sm:gap-8">
           <button
-            onClick={onNavigateToDashboard}
-            className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-cyan-600 to-teal-600 hover:from-cyan-700 hover:to-teal-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-base font-semibold transition-all duration-200"
-            title="View dashboard"
+            onClick={onRandomProblem}
+            disabled={isLoadingProblem}
+            className="flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-cyan-400 disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ color: 'var(--text-primary)' }}
+            title="Random problem"
           >
-            <BarChart3 className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-            <span className="text-xs sm:text-base">Dashboard</span>
+            <Shuffle className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
           </button>
-        )}
 
-        {onNavigateToAdmin && isAdmin && (
           <button
-            onClick={onNavigateToAdmin}
-            className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-base font-semibold transition-all duration-200"
-            title="Admin Panel"
+            onClick={onNavigateToProblems}
+            className="text-sm font-medium transition-colors hover:text-cyan-400"
+            style={{ color: 'var(--text-primary)' }}
+            title="All problems"
           >
-            <Shield className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-            <span className="text-xs sm:text-base">Admin</span>
+            Problems
           </button>
-        )}
 
-        {user ? (
-          <button
-            onClick={() => setShowAccountModal(true)}
-            className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-base font-semibold transition-all duration-200"
-            title="My Account"
-          >
-            <UserCircle2 className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-            <span className="text-xs sm:text-base">Account</span>
-          </button>
-        ) : (
-          <button
-            onClick={() => setShowAuthModal(true)}
-            className="flex items-center gap-1 sm:gap-2 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg text-xs sm:text-base font-semibold transition-all duration-200"
-            title="Sign in to your account"
-          >
-            <LogIn className="w-3.5 sm:w-4 h-3.5 sm:h-4" />
-            <span className="text-xs sm:text-base">Login</span>
-          </button>
-        )}
+          {onNavigateToDashboard && user && (
+            <button
+              onClick={onNavigateToDashboard}
+              className="text-sm font-medium transition-colors hover:text-cyan-400"
+              style={{ color: 'var(--text-primary)' }}
+              title="Dashboard"
+            >
+              Dashboard
+            </button>
+          )}
+
+          {onNavigateToAdmin && isAdmin && (
+            <button
+              onClick={onNavigateToAdmin}
+              className="text-sm font-medium transition-colors hover:text-yellow-400"
+              style={{ color: 'var(--text-primary)' }}
+              title="Admin"
+            >
+              Admin
+            </button>
+          )}
+
+          {user ? (
+            <button
+              onClick={() => setShowAccountModal(true)}
+              className="flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-cyan-400"
+              style={{ color: 'var(--text-primary)' }}
+              title="Account"
+            >
+              <UserCircle2 className="w-4 h-4" />
+              <span className="hidden sm:inline">Account</span>
+            </button>
+          ) : (
+            <button
+              onClick={() => setShowAuthModal(true)}
+              className="text-sm font-medium px-4 py-1.5 rounded-lg border transition-all hover:border-cyan-400 hover:text-cyan-400"
+              style={{ color: 'var(--text-primary)', borderColor: 'var(--border-color)' }}
+              title="Login"
+            >
+              Login
+            </button>
+          )}
+        </nav>
       </div>
 
       <AuthModal

@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Terminal } from 'lucide-react';
 import { supabase } from '../config/supabase';
 
 interface AuthModalProps {
@@ -9,41 +8,7 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProps) {
-  const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
   if (!isOpen) return null;
-
-  const handleEmailAuth = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-
-    try {
-      if (isSignUp) {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-        });
-        if (error) throw error;
-        onClose();
-      } else {
-        const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-        if (error) throw error;
-        onClose();
-      }
-    } catch (err: any) {
-      setError(err.message || 'An error occurred');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleGoogleSignIn = async () => {
     try {
@@ -58,10 +23,12 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
       });
 
       if (error) {
-        setError('Failed to sign in with Google. Please try again.');
+        console.error('Error signing in with Google:', error);
+        alert('Failed to sign in with Google. Please try again.');
       }
-    } catch (err) {
-      setError('An error occurred. Please try again.');
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again.');
     }
   };
 
@@ -86,84 +53,25 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
 
         <div className="p-8">
           <div className="text-center mb-8">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500">
+                <Terminal className="w-5 h-5 text-slate-900" strokeWidth={2.5} />
+              </div>
+              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+                JavaCodingPractice.com
+              </h1>
+            </div>
             <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-              {isSignUp ? 'Create Account' : 'Welcome Back'}
+              Sign In to Continue
             </h2>
             <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-              {isSignUp ? 'Sign up to start coding!' : 'Sign in to continue coding!'}
+              Sign in with Google to start coding
             </p>
-          </div>
-
-          {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-500/10 border border-red-500/50">
-              <p className="text-sm text-red-500">{error}</p>
-            </div>
-          )}
-
-          <form onSubmit={handleEmailAuth} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                Email
-              </label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:border-cyan-400"
-                style={{
-                  backgroundColor: 'var(--bg-tertiary)',
-                  borderColor: 'var(--border-color)',
-                  color: 'var(--text-primary)'
-                }}
-                placeholder="you@example.com"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: 'var(--text-primary)' }}>
-                Password
-              </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="w-full px-4 py-2 rounded-lg border transition-colors focus:outline-none focus:border-cyan-400"
-                style={{
-                  backgroundColor: 'var(--bg-tertiary)',
-                  borderColor: 'var(--border-color)',
-                  color: 'var(--text-primary)'
-                }}
-                placeholder="••••••••"
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-600 hover:to-cyan-600 disabled:from-gray-600 disabled:to-gray-600 text-white font-semibold py-2.5 rounded-lg transition-all duration-200"
-            >
-              {loading ? 'Loading...' : (isSignUp ? 'Sign Up' : 'Sign In')}
-            </button>
-          </form>
-
-          <div className="relative my-6">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t" style={{ borderColor: 'var(--border-color)' }}></div>
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="px-2" style={{ backgroundColor: 'var(--bg-secondary)', color: 'var(--text-secondary)' }}>
-                Or continue with
-              </span>
-            </div>
           </div>
 
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 border hover:border-cyan-400 font-medium py-2.5 rounded-lg transition-all duration-200"
-            style={{ borderColor: 'var(--border-color)', color: 'var(--text-primary)' }}
+            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-900 font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -183,17 +91,13 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
               />
             </svg>
-            Continue with Google
+            Sign in with Google
           </button>
 
           <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsSignUp(!isSignUp)}
-              className="text-sm hover:text-cyan-400 transition-colors"
-              style={{ color: 'var(--text-secondary)' }}
-            >
-              {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
-            </button>
+            <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+              By signing in, you agree to our Terms of Service and Privacy Policy
+            </p>
           </div>
         </div>
       </div>

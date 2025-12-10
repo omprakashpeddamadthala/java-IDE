@@ -27,7 +27,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
             <Terminal className="w-4 h-4 text-slate-900" strokeWidth={2.5} />
           </div>
           <h1 className="text-base sm:text-lg font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
-            JavaCodingPractice
+            JavaCodingPractice.com
           </h1>
         </div>
 

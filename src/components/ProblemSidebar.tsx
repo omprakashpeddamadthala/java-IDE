@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { ChevronRight, ChevronDown, List, X } from 'lucide-react';
 import { JavaProblem } from '../types/problem.types';
 

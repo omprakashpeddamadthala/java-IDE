@@ -1,4 +1,4 @@
-import { Terminal, Loader2, CheckCircle2, XCircle, Sparkles, Code2, Heart, PanelBottomOpen, PanelRightOpen } from 'lucide-react';
+import { Terminal, Loader2, CheckCircle2, XCircle, PanelBottomOpen, PanelRightOpen } from 'lucide-react';
 
 interface OutputPanelProps {
   output: string;

@@ -115,7 +115,7 @@ function App() {
         setExecutionCount(newCount);
         localStorage.setItem(EXECUTION_LIMIT_KEY, newCount.toString());
       }
-    } catch (error) {
+    } catch {
       setOutput('Unexpected error occurred while running code');
       setHasError(true);
     } finally {
@@ -167,7 +167,7 @@ function App() {
         setOutput('No problems found in database. Please seed the database first.');
         setHasError(true);
       }
-    } catch (error) {
+    } catch {
       setOutput('Error loading random problem');
       setHasError(true);
     } finally {
@@ -353,7 +353,6 @@ function App() {
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-        executionCount={executionCount}
       />
     </div>
   );

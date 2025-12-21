@@ -5,10 +5,9 @@ import { supabase } from '../config/supabase';
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
-  executionCount?: number;
 }
 
-export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProps) {
+export function AuthModal({ isOpen, onClose }: AuthModalProps) {
   if (!isOpen) return null;
 
   const handleGoogleSignIn = async () => {

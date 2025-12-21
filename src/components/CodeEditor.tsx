@@ -11,12 +11,12 @@ interface CodeEditorProps {
   currentProblem?: JavaProblem | null;
 }
 
-type TabType = 'code' | 'solution';
+type TabType = 'problem' | 'code' | 'solution';
 
 export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEditorProps) {
   const { theme } = useTheme();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
-  const [activeTab, setActiveTab] = useState<TabType>('code');
+  const [activeTab, setActiveTab] = useState<TabType>('problem');
 
   function getEditorOptions() {
     const width = window.innerWidth;
@@ -87,6 +87,16 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
       {currentProblem && (
         <div className="flex border-b border-[#323232] bg-[#1e1e1e]">
           <button
+            onClick={() => setActiveTab('problem')}
+            className={`px-4 py-2 text-xs font-medium transition-colors ${
+              activeTab === 'problem'
+                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+            }`}
+          >
+            Problem
+          </button>
+          <button
             onClick={() => setActiveTab('code')}
             className={`px-4 py-2 text-xs font-medium transition-colors ${
               activeTab === 'code'
@@ -106,6 +116,71 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
           >
             Solution
           </button>
+        </div>
+      )}
+
+      {activeTab === 'problem' && currentProblem && (
+        <div className="flex-1 overflow-auto bg-[#2B2B2B] p-6">
+          <div className="max-w-4xl mx-auto space-y-6">
+            <div>
+              <h1 className="text-2xl font-bold text-[#FFFFFF] mb-2">{currentProblem.title}</h1>
+              <div className="flex items-center gap-3">
+                <span className={`px-3 py-1 rounded-full text-xs font-medium ${
+                  currentProblem.difficulty === 'Easy'
+                    ? 'bg-green-500/20 text-green-400'
+                    : currentProblem.difficulty === 'Medium'
+                    ? 'bg-yellow-500/20 text-yellow-400'
+                    : 'bg-red-500/20 text-red-400'
+                }`}>
+                  {currentProblem.difficulty}
+                </span>
+                <span className="text-[#808080] text-sm">{currentProblem.category}</span>
+              </div>
+            </div>
+
+            <div className="prose prose-invert max-w-none">
+              <div className="text-[#CCCCCC] leading-relaxed whitespace-pre-wrap">
+                {currentProblem.description}
+              </div>
+            </div>
+
+            {currentProblem.examples && currentProblem.examples.length > 0 && (
+              <div className="space-y-4">
+                <h2 className="text-xl font-semibold text-[#FFFFFF]">Examples</h2>
+                {currentProblem.examples.map((example, index) => (
+                  <div key={index} className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-[#808080] text-sm">Input:</span>
+                        <pre className="text-[#CCCCCC] mt-1 font-mono text-sm">{example.input}</pre>
+                      </div>
+                      <div>
+                        <span className="text-[#808080] text-sm">Output:</span>
+                        <pre className="text-[#CCCCCC] mt-1 font-mono text-sm">{example.output}</pre>
+                      </div>
+                      {example.explanation && (
+                        <div>
+                          <span className="text-[#808080] text-sm">Explanation:</span>
+                          <p className="text-[#CCCCCC] mt-1 text-sm">{example.explanation}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {currentProblem.constraints && currentProblem.constraints.length > 0 && (
+              <div className="space-y-2">
+                <h2 className="text-xl font-semibold text-[#FFFFFF]">Constraints</h2>
+                <ul className="list-disc list-inside space-y-1 text-[#CCCCCC]">
+                  {currentProblem.constraints.map((constraint, index) => (
+                    <li key={index} className="text-sm">{constraint}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
       )}
 

@@ -269,13 +269,13 @@ function App() {
           className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
         >
         <div
-          className="relative overflow-hidden flex flex-col bg-[#313335] border border-[#323232]"
+          className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"
           style={{
             [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
           }}
         >
           {currentProblem && (
-            <div className="border-b border-[#323232] px-3 sm:px-4 py-3 bg-[#3C3F41]">
+            <div className="border-b border-[#323232] px-3 sm:px-4 py-3 bg-[#1e1e1e]">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex items-start gap-2 flex-1 min-w-0">
                   <div className="flex-shrink-0">
@@ -304,7 +304,7 @@ function App() {
                     className={`flex items-center gap-1.5 px-3 py-2 text-xs font-medium rounded transition-all ${
                       showFullSolution
                         ? 'bg-[#45494A] text-[#808080] cursor-not-allowed'
-                        : 'bg-[#4C5052] hover:bg-[#5C6164] text-[#BBBBBB] border border-[#6B6B6B]'
+                        : 'bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] border border-[#6B6B6B]'
                     }`}
                     title="Show complete solution"
                   >
@@ -324,7 +324,7 @@ function App() {
             </div>
           )}
           {!currentProblem && (
-            <div className="border-b border-[#323232] px-3 sm:px-4 py-3 bg-[#3C3F41]">
+            <div className="border-b border-[#323232] px-3 sm:px-4 py-3 bg-[#1e1e1e]">
               <div className="flex items-start justify-between gap-2">
                 <div className="flex-1 min-w-0">
                   <h2 className="text-xs sm:text-sm font-semibold text-[#A9B7C6]">
@@ -368,7 +368,7 @@ function App() {
         )}
 
         <div
-          className={`bg-[#313335] border border-[#323232] ${isMobile ? 'border-t' : ''}`}
+          className={`bg-[#1e1e1e] border border-[#323232] ${isMobile ? 'border-t' : ''}`}
           style={{
             [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
           }}
@@ -385,7 +385,7 @@ function App() {
       </div>
       </div>
 
-      <footer className="border-t border-[#323232] bg-[#3C3F41] px-2 sm:px-4 py-2">
+      <footer className="border-t border-[#323232] bg-[#1e1e1e] px-2 sm:px-4 py-2">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs">
           <div className="flex items-center gap-2 sm:gap-2.5">
             <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[#CC7832]" />

@@ -12,7 +12,7 @@ interface OutputPanelProps {
 export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleLayout, isMobile = false }: OutputPanelProps) {
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 border-b border-[#323232] bg-[#3C3F41]">
+      <div className="flex items-center justify-between px-3 sm:px-4 py-2.5 border-b border-[#323232] bg-[#1e1e1e]">
         <div className="flex items-center gap-2">
           <Terminal className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[#808080]" />
           <span className="text-xs sm:text-sm font-semibold text-[#A9B7C6]">Output</span>
@@ -43,7 +43,7 @@ export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleL
           {!isMobile && (
             <button
               onClick={onToggleLayout}
-              className="p-1.5 rounded hover:bg-[#4C5052] transition-all group"
+              className="p-1.5 rounded hover:bg-[#2a2d2e] transition-all group"
               title={layoutMode === 'bottom' ? 'Switch to side-by-side' : 'Switch to bottom'}
             >
               {layoutMode === 'bottom' ? (
@@ -56,7 +56,7 @@ export function OutputPanel({ output, isRunning, hasError, layoutMode, onToggleL
         </div>
       </div>
 
-      <div className="flex-1 overflow-auto p-3 sm:p-4 bg-[#313335]">
+      <div className="flex-1 overflow-auto p-3 sm:p-4 bg-[#1e1e1e]">
         {isRunning ? (
           <div className="flex items-center justify-center h-full">
             <div className="flex flex-col items-center gap-3 sm:gap-4">

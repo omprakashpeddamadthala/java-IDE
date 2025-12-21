@@ -20,7 +20,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
   const [showAccountModal, setShowAccountModal] = useState(false);
   return (
     <header
-      className="border-b border-[#323232] bg-[#3C3F41]"
+      className="border-b border-[#323232] bg-[#1e1e1e]"
     >
       <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -36,7 +36,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onToggleSidebar && (
             <button
               onClick={onToggleSidebar}
-              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
+              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
               title={isSidebarOpen ? 'Hide sidebar' : 'Show sidebar'}
             >
               {isSidebarOpen ? (
@@ -51,7 +51,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           <button
             onClick={onRandomProblem}
             disabled={isLoadingProblem}
-            className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded transition-all"
+            className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] disabled:opacity-50 disabled:cursor-not-allowed px-3 py-1.5 rounded transition-all"
             title="Random problem"
           >
             <Shuffle className="w-4 h-4" />
@@ -60,7 +60,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
 
           <button
             onClick={onNavigateToProblems}
-            className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
+            className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
             title="All problems"
           >
             Problems
@@ -69,7 +69,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onNavigateToDashboard && user && (
             <button
               onClick={onNavigateToDashboard}
-              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
+              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
               title="Dashboard"
             >
               Dashboard
@@ -79,7 +79,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {onNavigateToAdmin && isAdmin && (
             <button
               onClick={onNavigateToAdmin}
-              className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all"
+              className="text-sm font-medium text-[#CC7832] hover:text-[#FFA759] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
               title="Admin"
             >
               Admin
@@ -89,7 +89,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           {user ? (
             <button
               onClick={() => setShowAccountModal(true)}
-              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#4C5052] px-3 py-1.5 rounded transition-all border border-[#555555]"
+              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all border border-[#555555]"
               title="Account"
             >
               <UserCircle2 className="w-4 h-4" />
@@ -98,7 +98,7 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToProblems
           ) : (
             <button
               onClick={() => setShowAuthModal(true)}
-              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-4 py-1.5 rounded border border-[#555555] hover:bg-[#4C5052] transition-all"
+              className="text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] px-4 py-1.5 rounded border border-[#555555] hover:bg-[#2a2d2e] transition-all"
               title="Login"
             >
               Login

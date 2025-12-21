@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowLeft, User, Mail, Calendar, RefreshCw, Shield } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { Footer } from './Footer';
 
 interface AccountSettingsProps {
   onNavigateHome: () => void;
@@ -144,6 +145,8 @@ export function AccountSettings({ onNavigateHome }: AccountSettingsProps) {
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

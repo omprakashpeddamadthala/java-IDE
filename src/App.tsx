@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from 'react';
-import { Sparkles, Code2, Heart } from 'lucide-react';
 import { Header } from './components/Header';
 import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
@@ -9,6 +8,7 @@ import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
 import { About } from './components/About';
+import { Footer } from './components/Footer';
 import { useServices } from './context/ServiceContext';
 import { useAuth } from './context/AuthContext';
 import { JavaProblem } from './types/problem.types';
@@ -325,30 +325,7 @@ function App() {
       </div>
       </div>
 
-      <footer className="border-t border-[#323232] bg-[#1e1e1e] px-2 sm:px-4 py-2">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-3 text-xs">
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            <Sparkles className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[#CC7832]" />
-            <span className="text-[10px] sm:text-xs font-medium text-[#808080]">Developed By</span>
-            <span className="font-semibold text-[10px] sm:text-xs text-[#A9B7C6]">
-              Om Prakash Peddamadthala
-            </span>
-            <Code2 className="w-3.5 sm:w-4 h-3.5 sm:h-4 text-[#6897BB]" />
-            <Heart className="w-3 sm:w-3.5 h-3 sm:h-3.5 text-[#BC3F3C] fill-[#BC3F3C]" />
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="hidden sm:inline text-[#515151]">•</span>
-            <button
-              onClick={handleNavigateToAbout}
-              className="text-[10px] sm:text-xs font-medium text-[#6897BB] hover:text-[#87B7D7] transition-colors underline"
-            >
-              About Us
-            </button>
-            <span className="text-[#515151]">•</span>
-            <span className="text-[10px] sm:text-xs font-medium text-[#808080]">© 2024 All Rights Reserved</span>
-          </div>
-        </div>
-      </footer>
+      <Footer />
 
       <AuthModal
         isOpen={showAuthModal}

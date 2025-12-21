@@ -57,15 +57,15 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
         className="fixed inset-0 bg-black/50 z-40 md:hidden"
         onClick={onClose}
       />
-      <div className="w-64 bg-[#3C3F41] border-r border-[#323232] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto">
-      <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#323232] bg-[#3C3F41]">
+      <div className="w-64 bg-[#1e1e1e] border-r border-[#323232] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#323232] bg-[#1e1e1e]">
         <div className="flex items-center gap-2">
           <List className="w-4 h-4 text-[#808080]" />
           <span className="text-sm font-semibold text-[#A9B7C6]">Problems</span>
         </div>
         <button
           onClick={onClose}
-          className="p-1 rounded hover:bg-[#4C5052] transition-all"
+          className="p-1 rounded hover:bg-[#2a2d2e] transition-all"
           title="Close sidebar"
         >
           <X className="w-4 h-4 text-[#808080] hover:text-[#BBBBBB]" />
@@ -84,7 +84,7 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
               <div key={difficulty} className="border-b border-[#323232]">
                 <button
                   onClick={() => toggleCategory(difficulty)}
-                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#4C5052] transition-all"
+                  className="w-full flex items-center gap-2 px-3 py-2 hover:bg-[#2a2d2e] transition-all"
                 >
                   {isExpanded ? (
                     <ChevronDown className="w-3.5 h-3.5 text-[#808080]" />
@@ -101,16 +101,16 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
                 </button>
 
                 {isExpanded && (
-                  <div className="bg-[#313335]">
+                  <div className="bg-[#252526]">
                     {difficultyProblems
                       .sort((a, b) => a.number - b.number)
                       .map((problem) => (
                         <button
                           key={problem.id}
                           onClick={() => handleSelectProblem(problem)}
-                          className={`w-full text-left px-6 py-2 hover:bg-[#4C5052] transition-all border-l-2 ${
+                          className={`w-full text-left px-6 py-2 hover:bg-[#2a2d2e] transition-all border-l-2 ${
                             currentProblemId === problem.id
-                              ? 'border-[#365880] bg-[#2B3D4F]'
+                              ? 'border-[#007ACC] bg-[#094771]'
                               : 'border-transparent'
                           }`}
                         >

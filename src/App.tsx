@@ -6,6 +6,7 @@ import { OutputPanel } from './components/OutputPanel';
 import { ProblemSidebar } from './components/ProblemSidebar';
 import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
+import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
 import { useServices } from './context/ServiceContext';
 import { useAuth } from './context/AuthContext';
@@ -31,7 +32,7 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [showFullSolution, setShowFullSolution] = useState(false);
-  const [currentPage, setCurrentPage] = useState<'home' | 'dashboard' | 'admin'>('home');
+  const [currentPage, setCurrentPage] = useState<'home' | 'dashboard' | 'admin' | 'account-settings'>('home');
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [executionCount, setExecutionCount] = useState(0);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -205,8 +206,16 @@ function App() {
     setCurrentPage('admin');
   };
 
+  const handleNavigateToAccountSettings = () => {
+    setCurrentPage('account-settings');
+  };
+
   if (currentPage === 'admin') {
     return <AdminPanel onNavigateHome={handleNavigateHome} />;
+  }
+
+  if (currentPage === 'account-settings') {
+    return <AccountSettings onNavigateHome={handleNavigateHome} />;
   }
 
   if (currentPage === 'dashboard') {
@@ -232,6 +241,7 @@ function App() {
         isLoadingProblem={isLoadingProblem}
         onNavigateToDashboard={handleNavigateToDashboard}
         onNavigateToAdmin={handleNavigateToAdmin}
+        onNavigateToAccountSettings={handleNavigateToAccountSettings}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />

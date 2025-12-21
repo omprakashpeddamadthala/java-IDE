@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { Shuffle, CircleUser as UserCircle2, Terminal, PanelLeftClose, PanelLeft } from 'lucide-react';
+import { useState, useRef, useEffect } from 'react';
+import { Shuffle, ChevronDown, Terminal, PanelLeftClose, PanelLeft, User, LogOut } from 'lucide-react';
 import { AuthModal } from './AuthModal';
-import { MyAccountModal } from './MyAccountModal';
 import { useAuth } from '../context/AuthContext';
 
 interface HeaderProps {
@@ -9,14 +8,47 @@ interface HeaderProps {
   isLoadingProblem: boolean;
   onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
+  onNavigateToAccountSettings?: () => void;
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onToggleSidebar, isSidebarOpen }: HeaderProps) {
-  const { user, isAdmin } = useAuth();
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onToggleSidebar, isSidebarOpen }: HeaderProps) {
+  const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
-  const [showAccountModal, setShowAccountModal] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const userName = user?.user_metadata?.full_name ||
+                   (profile?.first_name && profile?.last_name
+                     ? `${profile.first_name} ${profile.last_name}`
+                     : profile?.first_name || profile?.last_name || 'User');
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowDropdown(false);
+      }
+    };
+
+    if (showDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showDropdown]);
+
+  const handleSignOut = async () => {
+    setShowDropdown(false);
+    await signOut();
+  };
+
+  const handleMyProfile = () => {
+    setShowDropdown(false);
+    onNavigateToAccountSettings?.();
+  };
   return (
     <header
       className="border-b border-[#323232] bg-[#1e1e1e]"
@@ -78,14 +110,39 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
           )}
 
           {user ? (
-            <button
-              onClick={() => setShowAccountModal(true)}
-              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all border border-[#555555]"
-              title="Account"
-            >
-              <UserCircle2 className="w-4 h-4" />
-              <span className="hidden sm:inline">Account</span>
-            </button>
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setShowDropdown(!showDropdown)}
+                className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all border border-[#555555]"
+                title="Account"
+              >
+                <span className="hidden sm:inline">{userName}</span>
+                <span className="sm:hidden">
+                  {userName.split(' ')[0]}
+                </span>
+                <ChevronDown className="w-4 h-4" />
+              </button>
+
+              {showDropdown && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#1e1e1e] border border-[#323232] rounded-lg shadow-xl py-1 z-50">
+                  <button
+                    onClick={handleMyProfile}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] transition-all"
+                  >
+                    <User className="w-4 h-4" />
+                    My Profile
+                  </button>
+                  <div className="border-t border-[#323232] my-1"></div>
+                  <button
+                    onClick={handleSignOut}
+                    className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-400 hover:text-red-300 hover:bg-[#2a2d2e] transition-all"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
           ) : (
             <button
               onClick={() => setShowAuthModal(true)}
@@ -101,11 +158,6 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
       <AuthModal
         isOpen={showAuthModal}
         onClose={() => setShowAuthModal(false)}
-      />
-
-      <MyAccountModal
-        isOpen={showAccountModal}
-        onClose={() => setShowAccountModal(false)}
       />
     </header>
   );

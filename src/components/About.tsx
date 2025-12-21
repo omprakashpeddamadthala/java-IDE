@@ -1,4 +1,5 @@
-import { Terminal, Code2, Play, BookOpen, Trophy, Users, Zap, Shield, Heart, Check, ArrowLeft } from 'lucide-react';
+import { Terminal, Code2, Play, BookOpen, Trophy, Users, Zap, Shield, Check, ArrowLeft } from 'lucide-react';
+import { Footer } from './Footer';
 
 interface AboutProps {
   onNavigateHome: () => void;
@@ -257,17 +258,7 @@ export function About({ onNavigateHome }: AboutProps) {
         </div>
       </main>
 
-      <footer className="border-t border-[#323232] bg-[#1e1e1e] px-4 sm:px-6 py-6 flex-shrink-0">
-        <div className="max-w-7xl mx-auto text-center space-y-3">
-          <div className="flex items-center justify-center gap-3 text-sm">
-            <Code2 className="w-4 h-4 text-[#6897BB]" />
-            <span className="text-[#808080]">Developed by</span>
-            <span className="font-semibold text-[#A9B7C6]">Om Prakash Peddamadthala</span>
-            <Heart className="w-4 h-4 text-[#BC3F3C] fill-[#BC3F3C]" />
-          </div>
-          <p className="text-xs text-[#808080]">© 2024 JavaCodingPractice.com. All Rights Reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

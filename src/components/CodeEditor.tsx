@@ -11,7 +11,7 @@ interface CodeEditorProps {
   currentProblem?: JavaProblem | null;
 }
 
-type TabType = 'code' | 'question' | 'solution';
+type TabType = 'code' | 'solution';
 
 export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEditorProps) {
   const { theme } = useTheme();
@@ -97,16 +97,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
             Code
           </button>
           <button
-            onClick={() => setActiveTab('question')}
-            className={`px-4 py-2 text-xs font-medium transition-colors ${
-              activeTab === 'question'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-            }`}
-          >
-            Question
-          </button>
-          <button
             onClick={() => setActiveTab('solution')}
             className={`px-4 py-2 text-xs font-medium transition-colors ${
               activeTab === 'solution'
@@ -139,47 +129,6 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
               </div>
             }
           />
-        </div>
-      )}
-
-      {activeTab === 'question' && currentProblem && (
-        <div className="flex-1 overflow-auto p-6 bg-[#2B2B2B]">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-[#A9B7C6] mb-4">
-              #{currentProblem.number}: {currentProblem.title}
-            </h2>
-            <div className="mb-4">
-              <span className={`inline-block px-3 py-1 text-xs font-semibold rounded ${
-                currentProblem.difficulty === 'basic' ? 'bg-[#2E5C2E] text-[#6AAB73]' :
-                currentProblem.difficulty === 'intermediate' ? 'bg-[#2B3D4F] text-[#6897BB]' :
-                currentProblem.difficulty === 'advanced' ? 'bg-[#4F3A2E] text-[#CC7832]' :
-                'bg-[#4B2E2E] text-[#BC3F3C]'
-              }`}>
-                {currentProblem.difficulty.toUpperCase()}
-              </span>
-            </div>
-            <div className="prose prose-invert max-w-none">
-              <p className="text-[#BBBBBB] text-sm leading-relaxed whitespace-pre-wrap">
-                {currentProblem.description}
-              </p>
-              {currentProblem.input && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-[#A9B7C6] mb-2">Input:</h3>
-                  <pre className="text-sm text-[#BBBBBB] bg-[#1e1e1e] p-4 rounded border border-[#323232] overflow-x-auto">
-                    {currentProblem.input}
-                  </pre>
-                </div>
-              )}
-              {currentProblem.expectedOutput && (
-                <div className="mt-4">
-                  <h3 className="text-lg font-semibold text-[#A9B7C6] mb-2">Expected Output:</h3>
-                  <pre className="text-sm text-[#BBBBBB] bg-[#1e1e1e] p-4 rounded border border-[#323232] overflow-x-auto">
-                    {currentProblem.expectedOutput}
-                  </pre>
-                </div>
-              )}
-            </div>
-          </div>
         </div>
       )}
 

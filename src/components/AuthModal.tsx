@@ -1,4 +1,5 @@
 import { X, Terminal } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import { supabase } from '../config/supabase';
 
 interface AuthModalProps {
@@ -32,10 +33,10 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
     }
   };
 
-  return (
+  const modalContent = (
     <div
       className="fixed inset-0 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-      style={{ zIndex: 9999 }}
+      style={{ zIndex: 99999 }}
       onClick={onClose}
     >
       <div
@@ -104,4 +105,6 @@ export function AuthModal({ isOpen, onClose, executionCount = 0 }: AuthModalProp
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }

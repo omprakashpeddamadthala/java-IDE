@@ -16,7 +16,7 @@ type TabType = 'problem' | 'code' | 'solution';
 export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEditorProps) {
   const { theme } = useTheme();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
-  const [activeTab, setActiveTab] = useState<TabType>('problem');
+  const [activeTab, setActiveTab] = useState<TabType>('code');
 
   function getEditorOptions() {
     const width = window.innerWidth;

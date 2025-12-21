@@ -137,21 +137,27 @@ export function CodeEditor({ value, onChange, onRun, currentProblem }: CodeEdito
                   {currentProblem.difficulty}
                 </span>
               </div>
-              <h1 className="text-2xl font-bold text-[#FFFFFF]">{currentProblem.title}</h1>
+              <h1 className="text-2xl font-bold text-[#FFFFFF] mb-4">{currentProblem.title}</h1>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3">Input</h2>
+                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-blue-500 rounded"></span>
+                  Sample Input
+                </h2>
                 <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                  <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words">{currentProblem.input}</pre>
+                  <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.input}</pre>
                 </div>
               </div>
 
               <div>
-                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3">Expected Output</h2>
+                <h2 className="text-lg font-semibold text-[#FFFFFF] mb-3 flex items-center gap-2">
+                  <span className="w-1 h-5 bg-green-500 rounded"></span>
+                  Expected Output
+                </h2>
                 <div className="bg-[#1e1e1e] rounded-lg p-4 border border-[#323232]">
-                  <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words">{currentProblem.output}</pre>
+                  <pre className="text-[#CCCCCC] font-mono text-sm whitespace-pre-wrap break-words overflow-x-auto">{currentProblem.output}</pre>
                 </div>
               </div>
             </div>

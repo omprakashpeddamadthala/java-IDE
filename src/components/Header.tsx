@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Shuffle, ChevronDown, Terminal, PanelLeftClose, PanelLeft, User, LogOut } from 'lucide-react';
+import { Shuffle, Terminal, PanelLeftClose, PanelLeft, User, LogOut } from 'lucide-react';
 import { AuthModal } from './AuthModal';
 import { useAuth } from '../context/AuthContext';
 
@@ -113,14 +113,13 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowDropdown(!showDropdown)}
-                className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all border border-[#555555]"
+                className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
                 title="Account"
               >
                 <span className="hidden sm:inline">{userName}</span>
                 <span className="sm:hidden">
                   {userName.split(' ')[0]}
                 </span>
-                <ChevronDown className="w-4 h-4" />
               </button>
 
               {showDropdown && (

@@ -14,6 +14,7 @@ import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
 import { useNavigation } from './hooks/useNavigation';
 import { useExecutionLimit } from './hooks/useExecutionLimit';
 import { errorHandlingService } from './services/ErrorHandlingService';
+import { Loader2, Code2 } from 'lucide-react';
 
 type LayoutMode = 'bottom' | 'side';
 
@@ -35,7 +36,16 @@ function App() {
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoading(false);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -179,6 +189,28 @@ function App() {
       navigation.navigateToHome();
     }
   };
+
+  if (isInitialLoading) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center bg-[#2B2B2B]">
+        <div className="flex flex-col items-center gap-6">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#6897BB] to-[#CC7832] rounded-full blur-xl opacity-50 animate-pulse"></div>
+            <div className="relative bg-[#1e1e1e] p-6 rounded-2xl border-2 border-[#6897BB]">
+              <Code2 className="w-16 h-16 text-[#6897BB]" />
+            </div>
+          </div>
+          <div className="flex flex-col items-center gap-3">
+            <h1 className="text-2xl font-bold text-[#FFFFFF]">JavaCodingPractice.com</h1>
+            <div className="flex items-center gap-2">
+              <Loader2 className="w-5 h-5 animate-spin text-[#6897BB]" />
+              <p className="text-sm text-[#A9B7C6] font-medium">Loading IDE...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (navigation.currentPage === 'admin') {
     return <AdminPanel onNavigateHome={navigation.navigateToHome} />;

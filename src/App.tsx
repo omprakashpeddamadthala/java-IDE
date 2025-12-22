@@ -224,7 +224,7 @@ function App() {
 
       <div className="flex-1 flex overflow-hidden">
         {isSidebarOpen && cachedProblems && (
-          <div style={{ width: '25%' }}>
+          <div style={{ width: '20%' }}>
             <ProblemSidebar
               problems={cachedProblems}
               onSelectProblem={handleSelectProblem}
@@ -239,7 +239,7 @@ function App() {
         <div
           ref={containerRef}
           className={`flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
-          style={{ width: isSidebarOpen && !isMobile ? '75%' : '100%' }}
+          style={{ width: isSidebarOpen && !isMobile ? '80%' : '100%' }}
         >
         <div
           className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"

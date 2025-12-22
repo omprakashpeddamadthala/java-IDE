@@ -7,7 +7,6 @@ import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
 import { AuthModal } from './components/AuthModal';
-import { About } from './components/About';
 import { Footer } from './components/Footer';
 import { useServices } from './context/ServiceContext';
 import { JavaProblem } from './types/problem.types';
@@ -181,10 +180,6 @@ function App() {
     }
   };
 
-  if (navigation.currentPage === 'about') {
-    return <About onNavigateHome={navigation.navigateToHome} />;
-  }
-
   if (navigation.currentPage === 'admin') {
     return <AdminPanel onNavigateHome={navigation.navigateToHome} />;
   }
@@ -217,7 +212,6 @@ function App() {
         onNavigateToDashboard={navigation.navigateToDashboard}
         onNavigateToAdmin={navigation.navigateToAdmin}
         onNavigateToAccountSettings={navigation.navigateToAccountSettings}
-        onNavigateToAbout={navigation.navigateToAbout}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />

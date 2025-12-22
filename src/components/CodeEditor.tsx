@@ -1,6 +1,7 @@
 import Editor from '@monaco-editor/react';
 import { Loader2, Play, Eye } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { JavaProblem } from '../types/problem.types';
 
@@ -18,6 +19,7 @@ type TabType = 'problem' | 'code' | 'solution';
 
 export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, onShowSolution, showFullSolution }: CodeEditorProps) {
   const { theme } = useTheme();
+  const { user } = useAuth();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
   const [activeTab, setActiveTab] = useState<TabType>('code');
 
@@ -113,7 +115,13 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             Code
           </button>
           <button
-            onClick={() => setActiveTab('solution')}
+            onClick={() => {
+              if (!user) {
+                setActiveTab('solution');
+              } else {
+                setActiveTab('solution');
+              }
+            }}
             className={`px-4 py-2 text-xs font-medium transition-colors ${
               activeTab === 'solution'
                 ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
@@ -247,7 +255,14 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
 
       {activeTab === 'solution' && (
         <div className="flex-1 overflow-auto bg-[#2B2B2B]">
-          {currentProblem ? (
+          {!user ? (
+            <div className="h-full flex items-center justify-center">
+              <div className="text-center px-4 py-6">
+                <p className="text-lg font-semibold text-[#FFFFFF] mb-2">Please login</p>
+                <p className="text-sm text-[#808080]">Sign in to view the solution</p>
+              </div>
+            </div>
+          ) : currentProblem ? (
             <div className="h-full">
               <Editor
                 height="100%"

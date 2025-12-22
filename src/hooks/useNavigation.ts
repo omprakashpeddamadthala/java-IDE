@@ -7,7 +7,6 @@ export interface UseNavigationResult {
   navigateToDashboard: () => void;
   navigateToAdmin: () => void;
   navigateToAccountSettings: () => void;
-  navigateToAbout: () => void;
 }
 
 export function useNavigation(initialPage: PageType = 'home'): UseNavigationResult {
@@ -17,7 +16,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
   const navigateToDashboard = useCallback(() => setCurrentPage('dashboard'), []);
   const navigateToAdmin = useCallback(() => setCurrentPage('admin'), []);
   const navigateToAccountSettings = useCallback(() => setCurrentPage('account-settings'), []);
-  const navigateToAbout = useCallback(() => setCurrentPage('about'), []);
 
   return {
     currentPage,
@@ -25,6 +23,5 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
     navigateToDashboard,
     navigateToAdmin,
     navigateToAccountSettings,
-    navigateToAbout,
   };
 }

@@ -28,7 +28,7 @@ function App() {
   const [hasError, setHasError] = useState(false);
   const [layoutMode, setLayoutMode] = useState<LayoutMode>('side');
   const [isMobile, setIsMobile] = useState(false);
-  const [outputSize, setOutputSize] = useState(40);
+  const [outputSize, setOutputSize] = useState(26.67);
   const [isResizing, setIsResizing] = useState(false);
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
   const [isLoadingProblem, setIsLoadingProblem] = useState(false);
@@ -224,19 +224,22 @@ function App() {
 
       <div className="flex-1 flex overflow-hidden">
         {isSidebarOpen && cachedProblems && (
-          <ProblemSidebar
-            problems={cachedProblems}
-            onSelectProblem={handleSelectProblem}
-            isOpen={isSidebarOpen}
-            onClose={() => setIsSidebarOpen(false)}
-            currentProblemId={currentProblem?.id}
-            isMobile={isMobile}
-          />
+          <div style={{ width: '25%' }}>
+            <ProblemSidebar
+              problems={cachedProblems}
+              onSelectProblem={handleSelectProblem}
+              isOpen={isSidebarOpen}
+              onClose={() => setIsSidebarOpen(false)}
+              currentProblemId={currentProblem?.id}
+              isMobile={isMobile}
+            />
+          </div>
         )}
 
         <div
           ref={containerRef}
-          className={`flex-1 flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
+          className={`flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
+          style={{ width: isSidebarOpen && !isMobile ? '75%' : '100%' }}
         >
         <div
           className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"

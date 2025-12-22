@@ -57,7 +57,7 @@ export function ProblemSidebar({ problems, onSelectProblem, isOpen, onClose, cur
         className="fixed inset-0 bg-black/50 z-40 md:hidden"
         onClick={onClose}
       />
-      <div className="w-64 bg-[#1e1e1e] border-r border-[#323232] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto">
+      <div className="w-full bg-[#1e1e1e] border-r border-[#323232] flex flex-col h-full md:relative fixed left-0 top-0 z-50 md:z-auto md:w-full" style={{ width: isMobile ? '16rem' : '100%' }}>
       <div className="flex items-center justify-between px-3 py-2.5 border-b border-[#323232] bg-[#1e1e1e]">
         <div className="flex items-center gap-2">
           <List className="w-4 h-4 text-[#808080]" />

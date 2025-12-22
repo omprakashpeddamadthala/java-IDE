@@ -55,24 +55,24 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
         <div className="p-8">
           <div className="text-center mb-8">
             <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-400 via-cyan-400 to-blue-500">
-                <Terminal className="w-5 h-5 text-slate-900" strokeWidth={2.5} />
+              <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#365880]">
+                <Terminal className="w-5 h-5 text-white" strokeWidth={2.5} />
               </div>
-              <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-[#A9B7C6]">
                 JavaCodingPractice.com
               </h1>
             </div>
-            <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
+            <h2 className="text-2xl font-bold mb-2 text-[#FFFFFF]">
               Sign In to Continue
             </h2>
-            <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-sm text-[#BBBBBB]">
               Sign in with Google to start coding
             </p>
           </div>
 
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 bg-white hover:bg-gray-100 text-gray-900 font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+            className="w-full flex items-center justify-center gap-3 bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#FFFFFF] font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 border border-[#555555] hover:border-[#666666]"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path

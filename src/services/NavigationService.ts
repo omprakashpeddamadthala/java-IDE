@@ -1,4 +1,4 @@
-export type PageType = 'home' | 'dashboard' | 'admin' | 'account-settings';
+export type PageType = 'home' | 'dashboard' | 'admin' | 'account-settings' | 'interview';
 
 export interface INavigationService {
   getCurrentPage(): PageType;

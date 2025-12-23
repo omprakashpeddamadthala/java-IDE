@@ -6,6 +6,7 @@ import { ProblemSidebar } from './components/ProblemSidebar';
 import { Dashboard } from './components/Dashboard';
 import { AdminPanel } from './components/AdminPanel';
 import { AccountSettings } from './components/AccountSettings';
+import { InterviewMode } from './components/InterviewMode';
 import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
 import { useServices } from './context/ServiceContext';
@@ -20,7 +21,17 @@ type LayoutMode = 'bottom' | 'side';
 
 function App() {
   const { problemService, compilerService } = useServices();
-  const navigation = useNavigation();
+
+  const getInitialPage = (): typeof navigation.currentPage => {
+    const path = window.location.pathname;
+    if (path === '/interview') return 'interview';
+    if (path === '/dashboard') return 'dashboard';
+    if (path === '/admin') return 'admin';
+    if (path === '/account-settings') return 'account-settings';
+    return 'home';
+  };
+
+  const navigation = useNavigation(getInitialPage());
   const executionLimit = useExecutionLimit();
   const [code, setCode] = useState(DEFAULT_JAVA_CODE);
   const [output, setOutput] = useState('');
@@ -212,6 +223,10 @@ function App() {
     );
   }
 
+  if (navigation.currentPage === 'interview') {
+    return <InterviewMode onNavigateHome={navigation.navigateToHome} />;
+  }
+
   if (navigation.currentPage === 'admin') {
     return <AdminPanel onNavigateHome={navigation.navigateToHome} />;
   }
@@ -244,6 +259,7 @@ function App() {
         onNavigateToDashboard={navigation.navigateToDashboard}
         onNavigateToAdmin={navigation.navigateToAdmin}
         onNavigateToAccountSettings={navigation.navigateToAccountSettings}
+        onNavigateToInterview={navigation.navigateToInterview}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />

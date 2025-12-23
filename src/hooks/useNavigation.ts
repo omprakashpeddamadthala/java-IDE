@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { PageType } from '../types/navigation.types';
 
 export interface UseNavigationResult {
@@ -7,15 +7,41 @@ export interface UseNavigationResult {
   navigateToDashboard: () => void;
   navigateToAdmin: () => void;
   navigateToAccountSettings: () => void;
+  navigateToInterview: () => void;
 }
 
 export function useNavigation(initialPage: PageType = 'home'): UseNavigationResult {
   const [currentPage, setCurrentPage] = useState<PageType>(initialPage);
 
-  const navigateToHome = useCallback(() => setCurrentPage('home'), []);
-  const navigateToDashboard = useCallback(() => setCurrentPage('dashboard'), []);
-  const navigateToAdmin = useCallback(() => setCurrentPage('admin'), []);
-  const navigateToAccountSettings = useCallback(() => setCurrentPage('account-settings'), []);
+  const getPageFromPath = useCallback((path: string): PageType => {
+    if (path === '/interview') return 'interview';
+    if (path === '/dashboard') return 'dashboard';
+    if (path === '/admin') return 'admin';
+    if (path === '/account-settings') return 'account-settings';
+    return 'home';
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const page = getPageFromPath(window.location.pathname);
+      setCurrentPage(page);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [getPageFromPath]);
+
+  const navigateTo = useCallback((page: PageType) => {
+    setCurrentPage(page);
+    const path = page === 'home' ? '/' : `/${page}`;
+    window.history.pushState(null, '', path);
+  }, []);
+
+  const navigateToHome = useCallback(() => navigateTo('home'), [navigateTo]);
+  const navigateToDashboard = useCallback(() => navigateTo('dashboard'), [navigateTo]);
+  const navigateToAdmin = useCallback(() => navigateTo('admin'), [navigateTo]);
+  const navigateToAccountSettings = useCallback(() => navigateTo('account-settings'), [navigateTo]);
+  const navigateToInterview = useCallback(() => navigateTo('interview'), [navigateTo]);
 
   return {
     currentPage,
@@ -23,5 +49,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
     navigateToDashboard,
     navigateToAdmin,
     navigateToAccountSettings,
+    navigateToInterview,
   };
 }

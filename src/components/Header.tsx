@@ -9,11 +9,12 @@ interface HeaderProps {
   onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
   onNavigateToAccountSettings?: () => void;
+  onNavigateToInterview?: () => void;
   onToggleSidebar?: () => void;
   isSidebarOpen?: boolean;
 }
 
-export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onToggleSidebar, isSidebarOpen }: HeaderProps) {
+export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboard, onNavigateToAdmin, onNavigateToAccountSettings, onNavigateToInterview, onToggleSidebar, isSidebarOpen }: HeaderProps) {
   const { user, profile, isAdmin, signOut } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -112,6 +113,16 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
             <Shuffle className="w-4 h-4" />
             <span className="hidden sm:inline">{isLoadingProblem ? 'Loading...' : 'Random'}</span>
           </button>
+
+          {onNavigateToInterview && (
+            <button
+              onClick={onNavigateToInterview}
+              className="text-sm font-medium text-[#6897BB] hover:text-[#87CEEB] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+              title="Take Test"
+            >
+              Take Test
+            </button>
+          )}
 
           {onNavigateToDashboard && user && (
             <button
@@ -214,6 +225,15 @@ export function Header({ onRandomProblem, isLoadingProblem, onNavigateToDashboar
               <Shuffle className="w-4 h-4" />
               <span>{isLoadingProblem ? 'Loading...' : 'Random Problem'}</span>
             </button>
+
+            {onNavigateToInterview && (
+              <button
+                onClick={() => handleNavigate(onNavigateToInterview)}
+                className="text-sm font-medium text-[#6897BB] hover:text-[#87CEEB] hover:bg-[#2a2d2e] px-3 py-2.5 rounded transition-all w-full text-left"
+              >
+                Take Test
+              </button>
+            )}
 
             {onNavigateToDashboard && user && (
               <>

@@ -93,44 +93,50 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   return (
     <div className="h-full w-full overflow-hidden flex flex-col">
       <div className="flex items-center justify-between border-b border-[#323232] bg-[#1e1e1e]">
-        <div className="flex">
-          <button
-            onClick={() => setActiveTab('problem')}
-            className={`px-4 py-2 text-xs font-medium transition-colors ${
-              activeTab === 'problem'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-            }`}
-          >
-            Problem
-          </button>
-          <button
-            onClick={() => setActiveTab('code')}
-            className={`px-4 py-2 text-xs font-medium transition-colors ${
-              activeTab === 'code'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-            }`}
-          >
-            Code
-          </button>
-          <button
-            onClick={() => {
-              if (!user) {
-                setActiveTab('solution');
-              } else {
-                setActiveTab('solution');
-              }
-            }}
-            className={`px-4 py-2 text-xs font-medium transition-colors ${
-              activeTab === 'solution'
-                ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
-                : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
-            }`}
-          >
-            Solution
-          </button>
-        </div>
+        {currentProblem ? (
+          <div className="flex">
+            <button
+              onClick={() => setActiveTab('problem')}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${
+                activeTab === 'problem'
+                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+              }`}
+            >
+              Problem
+            </button>
+            <button
+              onClick={() => setActiveTab('code')}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${
+                activeTab === 'code'
+                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+              }`}
+            >
+              Code
+            </button>
+            <button
+              onClick={() => {
+                if (!user) {
+                  setActiveTab('solution');
+                } else {
+                  setActiveTab('solution');
+                }
+              }}
+              className={`px-4 py-2 text-xs font-medium transition-colors ${
+                activeTab === 'solution'
+                  ? 'text-[#FFFFFF] border-b-2 border-[#6897BB] bg-[#2B2B2B]'
+                  : 'text-[#808080] hover:text-[#BBBBBB] hover:bg-[#2a2d2e]'
+              }`}
+            >
+              Solution
+            </button>
+          </div>
+        ) : (
+          <div className="px-4 py-2 text-sm font-medium text-[#A9B7C6]">
+            Interview Mode - Write your code below
+          </div>
+        )}
         <div className="flex items-center gap-2 px-3">
           {currentProblem && onShowSolution && (
             <button
@@ -158,7 +164,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
         </div>
       </div>
 
-      {activeTab === 'problem' && (
+      {currentProblem && activeTab === 'problem' && (
         <div className="flex-1 overflow-auto bg-[#2B2B2B] p-6">
           <div className="max-w-4xl mx-auto space-y-6">
             {currentProblem ? (
@@ -230,7 +236,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
         </div>
       )}
 
-      {activeTab === 'code' && (
+      {(activeTab === 'code' || !currentProblem) && (
         <div className="flex-1 overflow-hidden">
           <Editor
             height="100%"
@@ -253,7 +259,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
         </div>
       )}
 
-      {activeTab === 'solution' && (
+      {currentProblem && activeTab === 'solution' && (
         <div className="flex-1 overflow-auto bg-[#2B2B2B]">
           {!user ? (
             <div className="h-full flex items-center justify-center">

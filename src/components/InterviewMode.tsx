@@ -3,7 +3,7 @@ import { CodeEditor } from './CodeEditor';
 import { OutputPanel } from './OutputPanel';
 import { Footer } from './Footer';
 import { useServices } from '../context/ServiceContext';
-import { DEFAULT_JAVA_CODE } from '../constants/defaultCode';
+import { INTERVIEW_MODE_CODE } from '../constants/defaultCode';
 import { useExecutionLimit } from '../hooks/useExecutionLimit';
 import { errorHandlingService } from '../services/ErrorHandlingService';
 import { Terminal, Home } from 'lucide-react';
@@ -18,7 +18,7 @@ interface InterviewModeProps {
 export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
   const { compilerService } = useServices();
   const executionLimit = useExecutionLimit();
-  const [code, setCode] = useState(DEFAULT_JAVA_CODE);
+  const [code, setCode] = useState(INTERVIEW_MODE_CODE);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [hasError, setHasError] = useState(false);

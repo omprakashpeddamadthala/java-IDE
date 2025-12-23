@@ -5,7 +5,11 @@ export const DEFAULT_JAVA_CODE = `public class Welcome {
     }
 }`;
 
-export const INTERVIEW_MODE_CODE = `public class InterviewPractice {
+export const INTERVIEW_MODE_CODE = `import java.util.*;
+import java.util.stream.*;
+import java.io.*;
+
+public class InterviewPractice {
     public static void main(String[] args) {
         System.out.println("╔════════════════════════════════════════════╗");
         System.out.println("║   Welcome to JavaCodingPractice.com       ║");
@@ -17,16 +21,16 @@ export const INTERVIEW_MODE_CODE = `public class InterviewPractice {
         System.out.println("   • Full-screen coding environment");
         System.out.println("   • Instant code execution");
         System.out.println("   • 10 free runs without login");
+        System.out.println("   • Pre-imported: java.util.*, java.util.stream.*, java.io.*");
         System.out.println();
         System.out.println("💡 Quick Example:");
 
-        // Example: Array manipulation
-        int[] numbers = {1, 2, 3, 4, 5};
-        int sum = 0;
-        for (int num : numbers) {
-            sum += num;
-        }
-        System.out.println("   Sum of array: " + sum);
+        // Example: Stream operations
+        List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5);
+        int sum = numbers.stream()
+                        .mapToInt(Integer::intValue)
+                        .sum();
+        System.out.println("   Sum using streams: " + sum);
 
         // Example: String operations
         String message = "Happy Coding!";

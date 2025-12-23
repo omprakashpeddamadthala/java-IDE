@@ -6,8 +6,9 @@ import { useServices } from '../context/ServiceContext';
 import { INTERVIEW_MODE_CODE } from '../constants/defaultCode';
 import { useExecutionLimit } from '../hooks/useExecutionLimit';
 import { errorHandlingService } from '../services/ErrorHandlingService';
-import { Terminal, Home } from 'lucide-react';
+import { Terminal, Home, User } from 'lucide-react';
 import { AuthModal } from './AuthModal';
+import { useAuth } from '../context/AuthContext';
 
 type LayoutMode = 'bottom' | 'side';
 
@@ -18,6 +19,7 @@ interface InterviewModeProps {
 export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
   const { compilerService } = useServices();
   const executionLimit = useExecutionLimit();
+  const { user, profile } = useAuth();
   const [code, setCode] = useState(INTERVIEW_MODE_CODE);
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
@@ -27,6 +29,11 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
   const [isResizing, setIsResizing] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const userName = user?.user_metadata?.full_name ||
+                   (profile?.first_name && profile?.last_name
+                     ? `${profile.first_name} ${profile.last_name}`
+                     : profile?.first_name || profile?.last_name || 'User');
 
   const handleRunCode = async () => {
     if (!executionLimit.canExecute) {
@@ -97,16 +104,27 @@ export function InterviewMode({ onNavigateHome }: InterviewModeProps) {
             </h1>
           </div>
 
-          {onNavigateHome && (
-            <button
-              onClick={onNavigateHome}
-              className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
-              title="Home"
-            >
-              <Home className="w-4 h-4" />
-              <span className="hidden sm:inline">Home</span>
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            {user && (
+              <div className="flex items-center gap-2 text-sm font-medium text-[#BBBBBB] px-3 py-1.5">
+                <User className="w-4 h-4" />
+                <span className="hidden sm:inline">{userName}</span>
+                <span className="sm:hidden">
+                  {userName.split(' ')[0]}
+                </span>
+              </div>
+            )}
+            {onNavigateHome && (
+              <button
+                onClick={onNavigateHome}
+                className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-3 py-1.5 rounded transition-all"
+                title="Home"
+              >
+                <Home className="w-4 h-4" />
+                <span className="hidden sm:inline">Home</span>
+              </button>
+            )}
+          </div>
         </div>
       </header>
 

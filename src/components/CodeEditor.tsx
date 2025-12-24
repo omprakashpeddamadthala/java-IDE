@@ -1,8 +1,8 @@
 import Editor from '@monaco-editor/react';
-import { Loader2, Play, Eye } from 'lucide-react';
+import { Loader2, Play, Eye, AlignLeft } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { JavaProblem } from '../types/problem.types';
 
 interface CodeEditorProps {
@@ -22,6 +22,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   const { user } = useAuth();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
   const [activeTab, setActiveTab] = useState<TabType>('code');
+  const editorRef = useRef<any>(null);
 
   function getEditorOptions() {
     const width = window.innerWidth;
@@ -80,6 +81,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   };
 
   const handleEditorMount = (editor: any) => {
+    editorRef.current = editor;
     const monacoInstance = (window as any).monaco;
     if (monacoInstance) {
       editor.addCommand(monacoInstance.KeyMod.CtrlCmd | monacoInstance.KeyCode.Enter, () => {
@@ -88,6 +90,12 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     }
 
     editor.focus();
+  };
+
+  const handleFormatCode = () => {
+    if (editorRef.current) {
+      editorRef.current.getAction('editor.action.formatDocument')?.run();
+    }
   };
 
   return (
@@ -153,6 +161,14 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
               <span className="hidden sm:inline">Show Solution</span>
             </button>
           )}
+          <button
+            onClick={handleFormatCode}
+            className="flex items-center gap-1.5 bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] px-3 py-1.5 rounded text-xs font-medium transition-all border border-[#6B6B6B]"
+            title="Format code"
+          >
+            <AlignLeft className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Format</span>
+          </button>
           <button
             onClick={onRun}
             disabled={isRunning}

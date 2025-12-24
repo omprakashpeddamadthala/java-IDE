@@ -4,7 +4,6 @@ import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
 import { JavaProblem } from '../types/problem.types';
-import { formatJavaCode } from '../utils/javaFormatter';
 
 interface CodeEditorProps {
   value: string;
@@ -23,6 +22,7 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
   const { user } = useAuth();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
   const [activeTab, setActiveTab] = useState<TabType>('code');
+  const [isFormatting, setIsFormatting] = useState(false);
   const editorRef = useRef<any>(null);
 
   function getEditorOptions() {
@@ -93,11 +93,33 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
     editor.focus();
   };
 
-  const handleFormatCode = () => {
-    if (editorRef.current) {
+  const handleFormatCode = async () => {
+    if (!editorRef.current || isFormatting) return;
+
+    try {
+      setIsFormatting(true);
       const currentCode = editorRef.current.getValue();
-      const formattedCode = formatJavaCode(currentCode);
-      editorRef.current.setValue(formattedCode);
+
+      const response = await fetch('https://tools.tutorialspoint.com/format_javascript.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `code=${encodeURIComponent(currentCode)}`
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to format code');
+      }
+
+      const data = await response.json();
+      if (data.code) {
+        editorRef.current.setValue(data.code);
+      }
+    } catch (error) {
+      console.error('Error formatting code:', error);
+    } finally {
+      setIsFormatting(false);
     }
   };
 
@@ -166,11 +188,16 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
           )}
           <button
             onClick={handleFormatCode}
-            className="flex items-center gap-1.5 bg-[#2a2d2e] hover:bg-[#3a3d3e] text-[#BBBBBB] px-3 py-1.5 rounded text-xs font-medium transition-all border border-[#6B6B6B]"
+            disabled={isFormatting}
+            className="flex items-center gap-1.5 bg-[#2a2d2e] hover:bg-[#3a3d3e] disabled:bg-[#45494A] disabled:cursor-not-allowed text-[#BBBBBB] px-3 py-1.5 rounded text-xs font-medium transition-all border border-[#6B6B6B]"
             title="Format code"
           >
-            <AlignLeft className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Format</span>
+            {isFormatting ? (
+              <Loader2 className="w-3.5 h-3.5 animate-spin" />
+            ) : (
+              <AlignLeft className="w-3.5 h-3.5" />
+            )}
+            <span className="hidden sm:inline">{isFormatting ? 'Formatting...' : 'Format'}</span>
           </button>
           <button
             onClick={onRun}

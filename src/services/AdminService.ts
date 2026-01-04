@@ -44,16 +44,37 @@ export interface ProblemData {
 }
 
 export class AdminService {
-  async getAllUsers(page: number = 1, pageSize: number = 10): Promise<{ users: UserData[], total: number }> {
+  async getAllUsers(
+    page: number = 1,
+    pageSize: number = 10,
+    sortField?: string,
+    sortDirection?: 'asc' | 'desc'
+  ): Promise<{ users: UserData[], total: number }> {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
+    // Build the query with optional sorting
+    let query = supabase
+      .from('user_profiles')
+      .select('*');
+
+    // Apply sorting if provided
+    if (sortField && sortDirection) {
+      const columnMap: Record<string, string> = {
+        'name': 'first_name',  // Sort by first_name for name
+        'email': 'email',
+        'joined': 'created_at',
+        'role': 'is_admin'
+      };
+      const column = columnMap[sortField] || 'created_at';
+      query = query.order(column, { ascending: sortDirection === 'asc' });
+    } else {
+      // Default sorting
+      query = query.order('created_at', { ascending: false });
+    }
+
     const [{ data, error }, { count, error: countError }] = await Promise.all([
-      supabase
-        .from('user_profiles')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .range(from, to),
+      query.range(from, to),
       supabase
         .from('user_profiles')
         .select('*', { count: 'exact', head: true })
@@ -66,28 +87,36 @@ export class AdminService {
   }
 
   async getUserProgress(): Promise<Record<string, ProblemProgress>> {
-    const { data, error } = await supabase
-      .from('user_problem_progress')
-      .select('user_id, is_solved');
+    try {
+      // Try to get user progress data
+      // Note: This requires a 'user_problem_progress' table with appropriate columns
+      const { data, error } = await supabase
+        .from('user_problem_progress')
+        .select('user_id');
 
-    if (error) throw error;
-
-    const progressMap: Record<string, ProblemProgress> = {};
-    data?.forEach(record => {
-      if (!progressMap[record.user_id]) {
-        progressMap[record.user_id] = {
-          user_id: record.user_id,
-          solved_count: 0,
-          total_attempts: 0
-        };
+      if (error) {
+        console.warn('Could not fetch user progress:', error.message);
+        return {};
       }
-      progressMap[record.user_id].total_attempts++;
-      if (record.is_solved) {
-        progressMap[record.user_id].solved_count++;
-      }
-    });
 
-    return progressMap;
+      // Count attempts per user
+      const progressMap: Record<string, ProblemProgress> = {};
+      data?.forEach(record => {
+        if (!progressMap[record.user_id]) {
+          progressMap[record.user_id] = {
+            user_id: record.user_id,
+            solved_count: 0,
+            total_attempts: 0
+          };
+        }
+        progressMap[record.user_id].total_attempts++;
+      });
+
+      return progressMap;
+    } catch (error) {
+      console.warn('Error fetching user progress:', error);
+      return {}; // Return empty progress map, don't fail the entire user list
+    }
   }
 
   async toggleUserBlockStatus(userId: string, currentStatus: boolean): Promise<void> {
@@ -131,16 +160,38 @@ export class AdminService {
     if (error) throw error;
   }
 
-  async getAllProblems(page: number = 1, pageSize: number = 10): Promise<{ problems: ProblemData[], total: number }> {
+  async getAllProblems(
+    page: number = 1,
+    pageSize: number = 10,
+    sortField?: string,
+    sortDirection?: 'asc' | 'desc'
+  ): Promise<{ problems: ProblemData[], total: number }> {
     const from = (page - 1) * pageSize;
     const to = from + pageSize - 1;
 
+    // Build the query with optional sorting
+    let query = supabase
+      .from('java_problems')
+      .select('*');
+
+    // Apply sorting if provided
+    if (sortField && sortDirection) {
+      const columnMap: Record<string, string> = {
+        'number': 'number',
+        'title': 'title',
+        'category': 'category',
+        'difficulty': 'difficulty',
+        'created': 'created_at'
+      };
+      const column = columnMap[sortField] || 'created_at';
+      query = query.order(column, { ascending: sortDirection === 'asc' });
+    } else {
+      // Default sorting
+      query = query.order('created_at', { ascending: false });
+    }
+
     const [{ data, error }, { count, error: countError }] = await Promise.all([
-      supabase
-        .from('java_problems')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .range(from, to),
+      query.range(from, to),
       supabase
         .from('java_problems')
         .select('*', { count: 'exact', head: true })

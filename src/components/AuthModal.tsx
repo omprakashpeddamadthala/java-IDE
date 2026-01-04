@@ -1,6 +1,8 @@
-import { X, Terminal } from 'lucide-react';
+import { X, Terminal, Shield, User } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { supabase } from '../config/supabase';
+import { isLocalhost, devLogin } from '../utils/devAuth';
+import { useState } from 'react';
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -8,7 +10,11 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ isOpen, onClose }: AuthModalProps) {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   if (!isOpen) return null;
+
+  const showDevLogin = isLocalhost();
 
   const handleGoogleSignIn = async () => {
     try {
@@ -29,6 +35,20 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
     } catch (error) {
       console.error('Error:', error);
       alert('An error occurred. Please try again.');
+    }
+  };
+
+  const handleDevLogin = async (mode: 'admin' | 'user') => {
+    setIsLoggingIn(true);
+    const result = await devLogin(mode);
+
+    if (result.success) {
+      console.log(`✅ Successfully logged in as ${mode}`);
+      // Auth state will update automatically via Supabase onAuthStateChange
+      onClose();
+    } else {
+      alert(`Failed to login as ${mode}: ${result.error}`);
+      setIsLoggingIn(false);
     }
   };
 
@@ -66,9 +86,48 @@ export function AuthModal({ isOpen, onClose }: AuthModalProps) {
               Sign In to Continue
             </h2>
             <p className="text-sm text-[#BBBBBB]">
-              Sign in with Google to start coding
+              {showDevLogin ? 'Choose a login option' : 'Sign in with Google to start coding'}
             </p>
           </div>
+
+          {showDevLogin && (
+            <>
+              <div className="mb-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/30">
+                <p className="text-xs text-amber-400 text-center font-medium">
+                  🔧 DEV MODE - Localhost Only
+                </p>
+              </div>
+
+              <div className="space-y-3 mb-4">
+                <button
+                  onClick={() => handleDevLogin('admin')}
+                  disabled={isLoggingIn}
+                  className="w-full flex items-center justify-center gap-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 border border-purple-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Shield className="w-5 h-5" />
+                  {isLoggingIn ? 'Logging in...' : 'Dev Login as Admin'}
+                </button>
+
+                <button
+                  onClick={() => handleDevLogin('user')}
+                  disabled={isLoggingIn}
+                  className="w-full flex items-center justify-center gap-3 bg-[#2a2d2e] hover:bg-[#3a3d3e] text-white font-semibold py-3.5 px-4 rounded-lg transition-all duration-200 border border-[#555555] hover:border-[#666666] disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <User className="w-5 h-5" />
+                  {isLoggingIn ? 'Logging in...' : 'Dev Login as User'}
+                </button>
+              </div>
+
+              <div className="relative my-6">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-[#555555]"></div>
+                </div>
+                <div className="relative flex justify-center text-xs">
+                  <span className="px-2 bg-[#2b2b2b] text-[#BBBBBB]">OR</span>
+                </div>
+              </div>
+            </>
+          )}
 
           <button
             onClick={handleGoogleSignIn}

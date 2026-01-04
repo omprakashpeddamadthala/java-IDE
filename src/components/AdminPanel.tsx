@@ -34,24 +34,28 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const [problemsPage, setProblemsPage] = useState(1);
   const [loadingProblems, setLoadingProblems] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error', message: string } | null>(null);
+  const [usersSortField, setUsersSortField] = useState<string | null>(null);
+  const [usersSortDirection, setUsersSortDirection] = useState<'asc' | 'desc' | null>(null);
+  const [problemsSortField, setProblemsSortField] = useState<string | null>(null);
+  const [problemsSortDirection, setProblemsSortDirection] = useState<'asc' | 'desc' | null>(null);
 
   useEffect(() => {
     if (isAdmin && activeTab === 'users') {
       loadData();
     }
-  }, [isAdmin, activeTab, usersPage]);
+  }, [isAdmin, activeTab, usersPage, usersSortField, usersSortDirection]);
 
   useEffect(() => {
     if (isAdmin && activeTab === 'manage-problems') {
       loadProblems();
     }
-  }, [isAdmin, activeTab, problemsPage]);
+  }, [isAdmin, activeTab, problemsPage, problemsSortField, problemsSortDirection]);
 
   const loadData = async () => {
     try {
       setLoading(true);
       const [{ users: usersData, total }, progressData] = await Promise.all([
-        adminService.getAllUsers(usersPage, 10),
+        adminService.getAllUsers(usersPage, 10, usersSortField || undefined, usersSortDirection || undefined),
         adminService.getUserProgress()
       ]);
       setUsers(usersData);
@@ -85,7 +89,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
   const loadProblems = async () => {
     try {
       setLoadingProblems(true);
-      const { problems: problemsData, total } = await adminService.getAllProblems(problemsPage, 10);
+      const { problems: problemsData, total } = await adminService.getAllProblems(problemsPage, 10, problemsSortField || undefined, problemsSortDirection || undefined);
       setProblems(problemsData);
       setProblemsTotal(total);
     } catch (error) {
@@ -174,7 +178,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
           <h2 className="text-2xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>Access Denied</h2>
           <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>You do not have admin privileges.</p>
           <p className="text-sm mb-4" style={{ color: 'var(--text-tertiary)' }}>
-            Email: {profile?.email || 'Not logged in'}<br/>
+            Email: {profile?.email || 'Not logged in'}<br />
             Admin Status: {isAdmin ? 'Yes' : 'No'}
           </p>
           {onNavigateHome && (
@@ -192,66 +196,63 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
 
   return (
     <div className="h-screen flex flex-col" style={{ backgroundColor: 'var(--bg-primary)' }}>
-      <div className="border-b p-6" style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <Shield className="w-8 h-8 text-emerald-400" />
+      <div className="border-b px-6 py-4" style={{ backgroundColor: 'var(--bg-tertiary)', borderColor: 'var(--border-color)' }}>
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <Shield className="w-5 h-5 text-emerald-400" />
             <div>
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+              <h1 className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 Admin Panel
               </h1>
-              <p className="text-sm mt-1" style={{ color: 'var(--text-secondary)' }}>
-                Logged in as: {profile?.email}
+              <p className="text-xs" style={{ color: 'var(--text-secondary)' }}>
+                {profile?.email}
               </p>
             </div>
           </div>
           {onNavigateHome && (
             <button
               onClick={onNavigateHome}
-              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-lg font-semibold transition-all"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white rounded-md font-medium transition-all"
             >
-              <ArrowLeft className="w-5 h-5" />
-              Back to Home
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Home
             </button>
           )}
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-2">
           <button
             onClick={() => setActiveTab('users')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'users'
-                ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-                : 'text-gray-400 hover:text-white'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'users'
+              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
+              : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+              }`}
           >
-            <Users className="w-5 h-5" />
-            User Management
+            <Users className="w-3.5 h-3.5" />
+            Users
           </button>
           <button
             onClick={() => {
               setActiveTab('add-problem');
               resetProblemForm();
             }}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'add-problem'
-                ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-                : 'text-gray-400 hover:text-white'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'add-problem'
+              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
+              : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+              }`}
           >
-            <Plus className="w-5 h-5" />
+            <Plus className="w-3.5 h-3.5" />
             Add Problem
           </button>
           <button
             onClick={() => setActiveTab('manage-problems')}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition-all ${
-              activeTab === 'manage-problems'
-                ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
-                : 'text-gray-400 hover:text-white'
-            }`}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${activeTab === 'manage-problems'
+              ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
+              : 'text-gray-400 hover:text-white hover:bg-gray-700/50'
+              }`}
           >
-            <List className="w-5 h-5" />
-            Manage Problems
+            <List className="w-3.5 h-3.5" />
+            Problems
           </button>
         </div>
       </div>
@@ -265,6 +266,12 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             pageSize={10}
             userProgress={userProgress}
             loading={loading}
+            sortField={usersSortField}
+            sortDirection={usersSortDirection}
+            onSortChange={(field, direction) => {
+              setUsersSortField(field);
+              setUsersSortDirection(direction);
+            }}
             onToggleBlock={toggleBlockUser}
             onToggleAdmin={toggleAdminStatus}
             onDeleteUser={handleDeleteUser}
@@ -288,6 +295,12 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
             currentPage={problemsPage}
             pageSize={10}
             loading={loadingProblems}
+            sortField={problemsSortField}
+            sortDirection={problemsSortDirection}
+            onSortChange={(field, direction) => {
+              setProblemsSortField(field);
+              setProblemsSortDirection(direction);
+            }}
             onEdit={handleEditProblem}
             onDelete={handleDeleteProblem}
             onPageChange={setProblemsPage}

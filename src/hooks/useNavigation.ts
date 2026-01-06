@@ -8,16 +8,22 @@ export interface UseNavigationResult {
   navigateToAdmin: () => void;
   navigateToAccountSettings: () => void;
   navigateToInterview: () => void;
+  navigateToCheatsheet: () => void;
 }
 
 export function useNavigation(initialPage: PageType = 'home'): UseNavigationResult {
   const [currentPage, setCurrentPage] = useState<PageType>(initialPage);
 
   const getPageFromPath = useCallback((path: string): PageType => {
-    if (path === '/interview') return 'interview';
+    if (path === '/' || path === '') return 'home';
     if (path === '/dashboard') return 'dashboard';
     if (path === '/admin') return 'admin';
     if (path === '/account-settings') return 'account-settings';
+    if (path === '/about') return 'about';
+    if (path === '/interview') return 'interview';
+    if (path === '/cheatsheet') return 'cheatsheet';
+    if (path === '/udemint') return 'udemint';
+    if (path === '/freeai') return 'freeai';
     return 'home';
   }, []);
 
@@ -42,6 +48,7 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
   const navigateToAdmin = useCallback(() => navigateTo('admin'), [navigateTo]);
   const navigateToAccountSettings = useCallback(() => navigateTo('account-settings'), [navigateTo]);
   const navigateToInterview = useCallback(() => navigateTo('interview'), [navigateTo]);
+  const navigateToCheatsheet = useCallback(() => navigateTo('cheatsheet'), [navigateTo]);
 
   return {
     currentPage,
@@ -50,5 +57,6 @@ export function useNavigation(initialPage: PageType = 'home'): UseNavigationResu
     navigateToAdmin,
     navigateToAccountSettings,
     navigateToInterview,
+    navigateToCheatsheet,
   };
 }

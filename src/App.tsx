@@ -9,6 +9,8 @@ import { AccountSettings } from './components/AccountSettings';
 import { InterviewMode } from './components/InterviewMode';
 import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
+import { CheatsheetPage } from './components/CheatsheetPage';
+import { RedirectPage } from './components/RedirectPage';
 import { useServices } from './context/ServiceContext';
 import { JavaProblem } from './types/problem.types';
 import { DEFAULT_JAVA_CODE } from './constants/defaultCode';
@@ -28,6 +30,9 @@ function App() {
     if (path === '/dashboard') return 'dashboard';
     if (path === '/admin') return 'admin';
     if (path === '/account-settings') return 'account-settings';
+    if (path === '/cheatsheet') return 'cheatsheet';
+    if (path === '/udemint') return 'udemint';
+    if (path === '/freeai') return 'freeai';
     return 'home';
   };
 
@@ -244,6 +249,18 @@ function App() {
     );
   }
 
+  if (navigation.currentPage === 'cheatsheet') {
+    return <CheatsheetPage onNavigateHome={navigation.navigateToHome} />;
+  }
+
+  if (navigation.currentPage === 'udemint') {
+    return <RedirectPage redirectKey="udemint" />;
+  }
+
+  if (navigation.currentPage === 'freeai') {
+    return <RedirectPage redirectKey="freeai" />;
+  }
+
   return (
     <div
       className="h-screen flex flex-col overflow-hidden"
@@ -260,6 +277,7 @@ function App() {
         onNavigateToAdmin={navigation.navigateToAdmin}
         onNavigateToAccountSettings={navigation.navigateToAccountSettings}
         onNavigateToInterview={navigation.navigateToInterview}
+        onNavigateToCheatsheet={navigation.navigateToCheatsheet}
         onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         isSidebarOpen={isSidebarOpen}
       />
@@ -283,57 +301,56 @@ function App() {
           className={`flex overflow-hidden ${layoutMode === 'bottom' || isMobile ? 'flex-col' : 'flex-row'}`}
           style={{ width: isSidebarOpen && !isMobile ? '80%' : '100%' }}
         >
-        <div
-          className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"
-          style={{
-            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
-          }}
-        >
-          <div className="flex-1 overflow-hidden">
-            <CodeEditor
-              value={code}
-              onChange={setCode}
-              onRun={handleRunCode}
-              currentProblem={currentProblem}
+          <div
+            className="relative overflow-hidden flex flex-col bg-[#1e1e1e] border border-[#323232]"
+            style={{
+              [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${100 - outputSize}%`
+            }}
+          >
+            <div className="flex-1 overflow-hidden">
+              <CodeEditor
+                value={code}
+                onChange={setCode}
+                onRun={handleRunCode}
+                currentProblem={currentProblem}
+                isRunning={isRunning}
+                onShowSolution={handleShowSolution}
+                showFullSolution={showFullSolution}
+              />
+            </div>
+          </div>
+
+          {!isMobile && (
+            <div
+              className={`relative ${layoutMode === 'bottom'
+                ? 'w-full cursor-ns-resize hover:bg-[#515151]'
+                : 'h-full cursor-ew-resize hover:bg-[#515151]'
+                } ${isResizing ? 'bg-[#515151]' : ''}`}
+              style={{
+                [layoutMode === 'bottom' ? 'height' : 'width']: '4px',
+                backgroundColor: isResizing ? undefined : '#323232'
+              }}
+              onMouseDown={handleMouseDown}
+            >
+            </div>
+          )}
+
+          <div
+            className={`bg-[#1e1e1e] border border-[#323232] ${isMobile ? 'border-t' : ''}`}
+            style={{
+              [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
+            }}
+          >
+            <OutputPanel
+              output={output}
               isRunning={isRunning}
-              onShowSolution={handleShowSolution}
-              showFullSolution={showFullSolution}
+              hasError={hasError}
+              layoutMode={layoutMode}
+              onToggleLayout={toggleLayout}
+              isMobile={isMobile}
             />
           </div>
         </div>
-
-        {!isMobile && (
-          <div
-            className={`relative ${
-              layoutMode === 'bottom'
-                ? 'w-full cursor-ns-resize hover:bg-[#515151]'
-                : 'h-full cursor-ew-resize hover:bg-[#515151]'
-            } ${isResizing ? 'bg-[#515151]' : ''}`}
-            style={{
-              [layoutMode === 'bottom' ? 'height' : 'width']: '4px',
-              backgroundColor: isResizing ? undefined : '#323232'
-            }}
-            onMouseDown={handleMouseDown}
-          >
-          </div>
-        )}
-
-        <div
-          className={`bg-[#1e1e1e] border border-[#323232] ${isMobile ? 'border-t' : ''}`}
-          style={{
-            [layoutMode === 'bottom' || isMobile ? 'height' : 'width']: isMobile ? '50%' : `${outputSize}%`
-          }}
-        >
-          <OutputPanel
-            output={output}
-            isRunning={isRunning}
-            hasError={hasError}
-            layoutMode={layoutMode}
-            onToggleLayout={toggleLayout}
-            isMobile={isMobile}
-          />
-        </div>
-      </div>
       </div>
 
       <AuthModal

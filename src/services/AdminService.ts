@@ -206,12 +206,15 @@ export class AdminService {
   async updateProblem(id: string, problemData: Partial<AddProblemData>): Promise<void> {
     const updateData: any = { ...problemData };
 
-    if (problemData.starter_code) {
+    if (problemData.starter_code !== undefined) {
       updateData.input = problemData.starter_code;
+      delete updateData.starter_code;  // Remove form field name
     }
-    if (problemData.solution_code) {
+    if (problemData.solution_code !== undefined) {
       updateData.solution = problemData.solution_code;
+      delete updateData.solution_code;  // Remove form field name
     }
+
 
     const { error } = await supabase
       .from('java_problems')

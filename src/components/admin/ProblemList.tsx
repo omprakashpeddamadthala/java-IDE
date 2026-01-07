@@ -180,7 +180,7 @@ export function ProblemList({
                   <div className="col-span-1">
                     <div className="flex items-center gap-1">
                       <BarChart3 className="w-3 h-3" style={{ color: 'var(--text-tertiary)' }} />
-                      <span className={`text - [10px] font - bold px - 1.5 py - 0.5 rounded border ${getDifficultyColor(problem.difficulty)} `}>
+                      <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded border ${getDifficultyColor(problem.difficulty)}`}>
                         {problem.difficulty}
                       </span>
                     </div>
@@ -206,10 +206,10 @@ export function ProblemList({
 
                     <button
                       onClick={() => handleDelete(problem.id)}
-                      className={`flex items - center gap - 1 px - 2 py - 1 rounded - md text - xs font - medium transition - all ${deleteConfirm === problem.id
+                      className={`flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium transition-all ${deleteConfirm === problem.id
                         ? 'bg-red-600/40 hover:bg-red-600/50 text-red-300 border border-red-500/50'
                         : 'bg-gray-600/20 hover:bg-gray-600/30 text-gray-400 border border-gray-500/30'
-                        } `}
+                        }`}
                       title={deleteConfirm === problem.id ? 'Click to confirm' : 'Delete'}
                     >
                       <Trash2 className="w-3 h-3" />
@@ -255,10 +255,10 @@ export function ProblemList({
                       <button
                         key={pageNum}
                         onClick={() => onPageChange(pageNum)}
-                        className={`w - 7 h - 7 rounded - md text - xs font - medium transition - all ${currentPage === pageNum
+                        className={`w-7 h-7 rounded-md text-xs font-medium transition-all ${currentPage === pageNum
                           ? 'bg-gradient-to-r from-emerald-500 to-cyan-500 text-white'
                           : 'bg-gray-700/50 hover:bg-gray-600/50 text-gray-300 border border-gray-500/30'
-                          } `}
+                          }`}
                       >
                         {pageNum}
                       </button>

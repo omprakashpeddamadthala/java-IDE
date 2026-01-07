@@ -140,30 +140,10 @@ export function ProblemForm({ formData, onFormChange, onSubmit, submitStatus }: 
             />
           </div>
 
-          <div>
-            <label className="block text-sm font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-              Test Cases (JSON format)
-            </label>
-            <textarea
-              value={formData.test_cases}
-              onChange={(e) => handleChange('test_cases', e.target.value)}
-              rows={6}
-              className="w-full px-4 py-2 rounded-lg border font-mono text-sm"
-              style={{
-                backgroundColor: 'var(--bg-primary)',
-                borderColor: 'var(--border-color)',
-                color: 'var(--text-primary)'
-              }}
-              placeholder='[{"input": "...", "expected": "..."}]'
-              required
-            />
-          </div>
-
           {submitStatus && (
             <div
-              className={`p-4 rounded-lg ${
-                submitStatus.type === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-              }`}
+              className={`p-4 rounded-lg ${submitStatus.type === 'success' ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
+                }`}
             >
               {submitStatus.message}
             </div>

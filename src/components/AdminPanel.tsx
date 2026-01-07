@@ -25,8 +25,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
     category: 'General',
     difficulty: 'Easy',
     starter_code: '',
-    solution_code: '',
-    test_cases: ''
+    solution_code: ''
   });
   const [editingProblemId, setEditingProblemId] = useState<string | null>(null);
   const [problems, setProblems] = useState<ProblemData[]>([]);
@@ -131,9 +130,8 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       description: problem.description,
       category: problem.category,
       difficulty: problem.difficulty,
-      starter_code: problem.input,
-      solution_code: problem.solution,
-      test_cases: problem.test_cases
+      starter_code: problem.starter_code || problem.input,  // Use new field, fallback to old
+      solution_code: problem.solution_code || problem.solution  // Use new field, fallback to old
     });
     setEditingProblemId(problem.id);
     setActiveTab('add-problem');
@@ -164,8 +162,7 @@ export function AdminPanel({ onNavigateHome }: AdminPanelProps) {
       category: 'General',
       difficulty: 'Easy',
       starter_code: '',
-      solution_code: '',
-      test_cases: ''
+      solution_code: ''
     });
     setEditingProblemId(null);
   };

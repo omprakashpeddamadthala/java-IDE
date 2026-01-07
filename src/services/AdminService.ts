@@ -23,7 +23,7 @@ export interface AddProblemData {
   difficulty: string;
   starter_code: string;
   solution_code: string;
-  test_cases: string;
+  test_cases?: string;
 }
 
 export interface ProblemData {
@@ -151,9 +151,10 @@ export class AdminService {
       .from('java_problems')
       .insert([{
         ...problemData,
+        test_cases: problemData.test_cases || '',
         number: nextNumber,
-        input: problemData.starter_code,
-        solution: problemData.solution_code,
+        input: problemData.starter_code || '',  // Keep for backward compatibility
+        solution: problemData.solution_code || '',  // Keep for backward compatibility
         output: ''
       }]);
 
@@ -204,17 +205,11 @@ export class AdminService {
   }
 
   async updateProblem(id: string, problemData: Partial<AddProblemData>): Promise<void> {
-    const updateData: any = { ...problemData };
-
-    if (problemData.starter_code !== undefined) {
-      updateData.input = problemData.starter_code;
-      delete updateData.starter_code;  // Remove form field name
-    }
-    if (problemData.solution_code !== undefined) {
-      updateData.solution = problemData.solution_code;
-      delete updateData.solution_code;  // Remove form field name
-    }
-
+    const updateData: any = {
+      ...problemData,
+      input: problemData.starter_code || '',  // Keep for backward compatibility
+      solution: problemData.solution_code || ''  // Keep for backward compatibility
+    };
 
     const { error } = await supabase
       .from('java_problems')

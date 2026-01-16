@@ -149,5 +149,38 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Auto Fullscreen Script -->
+    <script>
+      // Function to request fullscreen with cross-browser support
+      function enterFullscreen() {
+        const elem = document.documentElement;
+        
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen().catch(err => {
+            console.log('Fullscreen request failed:', err);
+          });
+        } else if (elem.webkitRequestFullscreen) { // Safari
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE11
+          elem.msRequestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+          elem.mozRequestFullScreen();
+        }
+      }
+      
+      // Try to enter fullscreen when page loads
+      window.addEventListener('load', function() {
+        // Small delay to ensure page is fully loaded
+        setTimeout(enterFullscreen, 100);
+      });
+      
+      // Also try on first user interaction (in case auto-fullscreen is blocked)
+      document.addEventListener('click', function autoFullscreen() {
+        enterFullscreen();
+        // Remove this listener after first click
+        document.removeEventListener('click', autoFullscreen);
+      }, { once: true });
+    </script>
   </body>
 </html>

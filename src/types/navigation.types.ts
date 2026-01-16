@@ -1,10 +1,9 @@
-export type PageType = 'home' | 'dashboard' | 'admin' | 'account-settings' | 'about' | 'interview' | 'cheatsheet' | 'udemint' | 'freeai';
+export type PageType = 'home' | 'dashboard' | 'admin' | 'about' | 'udemint' | 'freeai';
 
 export interface NavigationProps {
   onNavigateHome: () => void;
   onNavigateToDashboard?: () => void;
   onNavigateToAdmin?: () => void;
-  onNavigateToAccountSettings?: () => void;
   onNavigateToAbout?: () => void;
 }
 

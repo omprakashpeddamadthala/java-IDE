@@ -1,5 +1,5 @@
 import Editor from '@monaco-editor/react';
-import { Loader2, Play, Eye, Info } from 'lucide-react';
+import { Loader2, Play, Eye, Info, PanelLeftClose, PanelLeft } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 import { useState, useEffect, useRef } from 'react';
@@ -15,7 +15,9 @@ interface CodeEditorProps {
   currentProblem?: JavaProblem | null;
   isRunning?: boolean;
   onShowSolution?: () => void;
-  onShowAuthModal?: () => void; // Add callback to show auth modal
+  onShowAuthModal?: () => void;
+  onToggleSidebar?: () => void;
+  isSidebarOpen?: boolean;
 }
 
 type TabType = 'problem' | 'hints' | 'code';
@@ -25,7 +27,7 @@ type TabType = 'problem' | 'hints' | 'code';
  * Main coding interface with skeleton code and solution toggle
  * Follows clean code principles and SOLID design patterns
  */
-export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, onShowSolution, onShowAuthModal }: CodeEditorProps) {
+export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, onShowSolution, onShowAuthModal, onToggleSidebar, isSidebarOpen }: CodeEditorProps) {
   const { theme } = useTheme();
   const { user } = useAuth();
   const [editorOptions, setEditorOptions] = useState(() => getEditorOptions());
@@ -207,8 +209,24 @@ export function CodeEditor({ value, onChange, onRun, currentProblem, isRunning, 
             </button>
           </div>
         ) : (
-          <div className="px-4 py-2 text-sm font-medium text-[#A9B7C6]">
-            Code Editor
+          <div className="px-4 py-2 flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              {onToggleSidebar && (
+                <button
+                  onClick={onToggleSidebar}
+                  className="flex items-center gap-1.5 text-sm font-medium text-[#BBBBBB] hover:text-[#FFFFFF] hover:bg-[#2a2d2e] px-2 py-1 rounded transition-all"
+                  title={isSidebarOpen ? 'Hide problems sidebar' : 'Show problems sidebar'}
+                >
+                  {isSidebarOpen ? (
+                    <PanelLeftClose className="w-4 h-4" />
+                  ) : (
+                    <PanelLeft className="w-4 h-4" />
+                  )}
+                  <span className="hidden sm:inline">Problems</span>
+                </button>
+              )}
+              <span className="text-sm font-medium text-[#A9B7C6]">Code Editor</span>
+            </div>
           </div>
         )}
         <div className="flex items-center gap-2 px-3">

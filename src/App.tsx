@@ -4,11 +4,8 @@ import { CodeEditor } from './components/CodeEditor';
 import { OutputPanel } from './components/OutputPanel';
 import { ProblemSidebar } from './components/ProblemSidebar';
 import { AdminPanel } from './components/AdminPanel';
-import { AccountSettings } from './components/AccountSettings';
-import { InterviewMode } from './components/InterviewMode';
 import { AuthModal } from './components/AuthModal';
 import { Footer } from './components/Footer';
-import { CheatsheetPage } from './components/CheatsheetPage';
 import { RedirectPage } from './components/RedirectPage';
 import { useServices } from './context/ServiceContext';
 import { JavaProblem } from './types/problem.types';
@@ -27,10 +24,7 @@ function App() {
 
   const getInitialPage = (): typeof navigation.currentPage => {
     const path = window.location.pathname;
-    if (path === '/interview') return 'interview';
     if (path === '/admin') return 'admin';
-    if (path === '/account-settings') return 'account-settings';
-    if (path === '/cheatsheet') return 'cheatsheet';
     if (path === '/udemint') return 'udemint';
     if (path === '/freeai') return 'freeai';
     return 'home';
@@ -47,7 +41,6 @@ function App() {
   const [outputSize, setOutputSize] = useState(26.67);
   const [isResizing, setIsResizing] = useState(false);
   const [currentProblem, setCurrentProblem] = useState<JavaProblem | null>(null);
-  const [isLoadingProblem, setIsLoadingProblem] = useState(false);
   const [cachedProblems, setCachedProblems] = useState<JavaProblem[] | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -196,36 +189,6 @@ function App() {
     }
   };
 
-  const handleRandomProblem = async () => {
-    setIsLoadingProblem(true);
-    try {
-      const problem = await problemService.getRandomProblem();
-      if (problem) {
-        setCurrentProblem(problem);
-        const practiceCode = problemService.extractPracticeCode(problem.solution || '');
-        setCode(practiceCode);
-        setOutput('');
-        setHasError(false);
-      } else {
-        setOutput('No problems found in database. Please seed the database first.');
-        setHasError(true);
-      }
-    } catch (error) {
-      const errorMessage = errorHandlingService.handleError(error);
-      setOutput(errorMessage || 'Error loading random problem');
-      setHasError(true);
-    } finally {
-      setIsLoadingProblem(false);
-    }
-  };
-
-  const handleShowSolution = () => {
-    if (!currentProblem || !currentProblem.solution) return;
-    setCode(currentProblem.solution);
-    setOutput('');
-    setHasError(false);
-  };
-
   /**
    * Handles problem selection from sidebar
    * Updates URL with problem slug for sharing
@@ -243,6 +206,13 @@ function App() {
     if (navigation.currentPage !== 'home') {
       navigation.navigateToHome();
     }
+  };
+
+  const handleShowSolution = () => {
+    if (!currentProblem || !currentProblem.solution) return;
+    setCode(currentProblem.solution);
+    setOutput('');
+    setHasError(false);
   };
 
   if (isInitialLoading) {
@@ -267,20 +237,8 @@ function App() {
     );
   }
 
-  if (navigation.currentPage === 'interview') {
-    return <InterviewMode onNavigateHome={navigation.navigateToHome} />;
-  }
-
   if (navigation.currentPage === 'admin') {
     return <AdminPanel onNavigateHome={navigation.navigateToHome} />;
-  }
-
-  if (navigation.currentPage === 'account-settings') {
-    return <AccountSettings onNavigateHome={navigation.navigateToHome} />;
-  }
-
-  if (navigation.currentPage === 'cheatsheet') {
-    return <CheatsheetPage onNavigateHome={navigation.navigateToHome} />;
   }
 
   if (navigation.currentPage === 'udemint') {
@@ -301,14 +259,7 @@ function App() {
       onMouseUp={handleMouseUp}
     >
       <Header
-        onRandomProblem={handleRandomProblem}
-        isLoadingProblem={isLoadingProblem}
         onNavigateToAdmin={navigation.navigateToAdmin}
-        onNavigateToAccountSettings={navigation.navigateToAccountSettings}
-        onNavigateToInterview={navigation.navigateToInterview}
-        onNavigateToCheatsheet={navigation.navigateToCheatsheet}
-        onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-        isSidebarOpen={isSidebarOpen}
       />
 
       <div className="flex-1 flex overflow-hidden">
@@ -345,6 +296,8 @@ function App() {
                 isRunning={isRunning}
                 onShowSolution={handleShowSolution}
                 onShowAuthModal={() => setShowAuthModal(true)}
+                onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
+                isSidebarOpen={isSidebarOpen}
               />
             </div>
           </div>
